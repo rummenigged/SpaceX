@@ -46,6 +46,7 @@ import com.octopus.edu.kotlin.spacex.core.model.mock
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXDestination
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXNavigation
 import com.octopus.edu.kotlin.spacex.core.ui.common.LocalNavigation
+import com.octopus.edu.kotlin.spacex.design.FullScreenCircularProgressIndicator
 import com.octopus.edu.kotlin.spacex.design.SpaceXTopBar
 import com.octopus.edu.kotlin.spacex.feature.common.LaunchedUiEffectHandler
 import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.getStatusValue
@@ -110,11 +111,7 @@ internal fun LaunchesScreenContent (
     modifier: Modifier = Modifier,
 ) {
     if (uiState.isLoading){
-        Box(modifier = modifier.fillMaxSize()) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        FullScreenCircularProgressIndicator()
     }else{
         LazyColumn(
             modifier = modifier.fillMaxSize(),

@@ -200,17 +200,6 @@ fun LaunchPatch(
     }
 }
 
-@Composable
-fun FullScreenCircularProgressIndicator(
-    modifier: Modifier = Modifier
-) {
-    Box(modifier = modifier.fillMaxSize()) {
-        CircularProgressIndicator(
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
-
 @PreviewLightDark
 @Composable
 fun LeagueItemPreview() {

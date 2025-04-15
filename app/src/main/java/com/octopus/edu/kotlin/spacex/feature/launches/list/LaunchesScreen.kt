@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
@@ -28,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -46,6 +44,7 @@ import com.octopus.edu.kotlin.spacex.core.model.mock
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXDestination
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXNavigation
 import com.octopus.edu.kotlin.spacex.core.ui.common.LocalNavigation
+import com.octopus.edu.kotlin.spacex.design.FullScreenCircularProgressIndicator
 import com.octopus.edu.kotlin.spacex.design.SpaceXTopBar
 import com.octopus.edu.kotlin.spacex.feature.common.LaunchedUiEffectHandler
 import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.getStatusValue
@@ -110,11 +109,7 @@ internal fun LaunchesScreenContent (
     modifier: Modifier = Modifier,
 ) {
     if (uiState.isLoading){
-        Box(modifier = modifier.fillMaxSize()) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        FullScreenCircularProgressIndicator()
     }else{
         LazyColumn(
             modifier = modifier.fillMaxSize(),

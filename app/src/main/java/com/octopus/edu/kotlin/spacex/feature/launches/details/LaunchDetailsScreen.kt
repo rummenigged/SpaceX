@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.octopus.edu.kotlin.spacex.design.FullScreenCircularProgressIndicator
 import com.octopus.edu.kotlin.spacex.design.SpaceXTopBar
 import com.octopus.edu.kotlin.spacex.feature.common.LaunchedUiEffectHandler
 import kotlinx.coroutines.flow.StateFlow
@@ -76,34 +77,38 @@ fun LaunchDetailsScreen(
     uiState: UiState,
     modifier: Modifier = Modifier
 ) {
+    if (uiState.isLoading){
+        FullScreenCircularProgressIndicator()
+    }else{
+        Column(modifier = modifier) {
+            RocketImage(imageUrl = uiState.details?.rocket?.images?.firstOrNull())
 
-    Column(modifier = modifier) {
-        RocketImage(imageUrl = uiState.details?.rocket?.images?.firstOrNull())
+            uiState.details?.rocket?.name?.let { rocketName ->
+                Spacer(Modifier.height(8.dp))
 
-        uiState.details?.rocket?.name?.let { rocketName ->
-            Spacer(Modifier.height(8.dp))
+                Text(
+                    text = "Rocket Name: $rocketName"
+                )
+            }
 
-            Text(
-                text = "Rocket Name: $rocketName"
-            )
-        }
+            uiState.details?.missionName?.let { missionName ->
+                Spacer(Modifier.height(8.dp))
 
-        uiState.details?.missionName?.let { missionName ->
-            Spacer(Modifier.height(8.dp))
+                Text(
+                    text = "Mission Name: $missionName"
+                )
+            }
 
-            Text(
-                text = "Mission Name: $missionName"
-            )
-        }
+            uiState.details?.siteName?.let { siteName ->
+                Spacer(Modifier.height(8.dp))
 
-        uiState.details?.siteName?.let { siteName ->
-            Spacer(Modifier.height(8.dp))
-
-            Text(
-                text = "Site Name: $siteName"
-            )
+                Text(
+                    text = "Site Name: $siteName"
+                )
+            }
         }
     }
+
 }
 
 @Composable

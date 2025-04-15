@@ -65,7 +65,7 @@ internal fun LaunchesScreen(
 
     Scaffold(
         modifier = modifier,
-        topBar = { SpaceXTopBar(title = R.string.app_name) }
+        topBar = { SpaceXTopBar(title = R.string.launch_list_title) }
     ) { padding ->
         LaunchesScreenContent(
             modifier = modifier.padding(padding),

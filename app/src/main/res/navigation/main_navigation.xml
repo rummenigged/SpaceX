@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/launchesFragment">
+
+    <fragment
+        android:id="@+id/launchesFragment"
+        android:name="com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesFragment"
+        android:label="LaunchesFragment" >
+        <action
+            android:id="@+id/toLaunchDetails"
+            app:destination="@id/launchDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/launchDetailsFragment"
+        android:name="com.octopus.edu.kotlin.spacex.feature.launches.details.LaunchDetailsFragment"
+        android:label="LaunchDetailsFragment" >
+        <argument
+            android:name="flightNumber"
+            app:argType="integer" />
+    </fragment>
+</navigation>

@@ -5,15 +5,26 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.dagger.hilt.android) apply false
+    alias(libs.plugins.ktlint)
 }
 
 buildscript {
-    repositories{
+    repositories {
         google()
         mavenCentral()
     }
 
-    dependencies{
+    dependencies {
         classpath(libs.androidx.navigation.safeArgsGradlePlugin)
+        classpath(libs.ktlint.gradlePlugin)
+    }
+}
+
+allprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+    ktlint {
+        verbose = true
+        android = true
     }
 }

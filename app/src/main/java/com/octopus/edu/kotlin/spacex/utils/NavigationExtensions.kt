@@ -15,12 +15,16 @@ fun NavController.safelyNavigate(direction: NavDirections) =
         Log.e(e::class.toString(), e.message.orEmpty())
     }
 
-fun Fragment.safelyNavigate(direction: NavDirections, @IdRes host: Int? = null) {
-    val navController = if (host == null) {
-        findNavController()
-    } else {
-        Navigation.findNavController(requireActivity(), host)
-    }
+fun Fragment.safelyNavigate(
+    direction: NavDirections,
+    @IdRes host: Int? = null,
+) {
+    val navController =
+        if (host == null) {
+            findNavController()
+        } else {
+            Navigation.findNavController(requireActivity(), host)
+        }
 
     navController.safelyNavigate(direction)
 }

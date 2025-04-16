@@ -19,34 +19,35 @@ import javax.inject.Singleton
 class NetworkModule {
     @Provides
     @Singleton
-    fun provideLoggingInterceptor() = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
+    fun provideLoggingInterceptor() =
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 
     @Provides
     @Singleton
-    fun buildHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient =
+    fun buildHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
     @Provides
     @Singleton
-    fun buildMoshi(): Moshi = Moshi.Builder()
-        .addLast(KotlinJsonAdapterFactory())
-        .build()
+    fun buildMoshi(): Moshi =
+        Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
 
     @Provides
     @Singleton
     fun buildRetrofit(
         okHttpClient: OkHttpClient,
-        moshi: Moshi
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.SERVER_ROUTE)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .addCallAdapterFactory(NetworkResultCallAdapterFactory())
-        .client(okHttpClient)
-        .build()
+        moshi: Moshi,
+    ): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.SERVER_ROUTE)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(NetworkResultCallAdapterFactory())
+            .client(okHttpClient)
+            .build()
 }

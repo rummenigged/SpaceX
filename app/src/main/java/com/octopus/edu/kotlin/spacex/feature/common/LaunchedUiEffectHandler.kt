@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun <EFFECT : ViewEffect> LaunchedUiEffectHandler(
     effectFlow: StateFlow<EFFECT?>,
     onEffect: suspend (EFFECT) -> Unit,
-    onEffectConsumed: () -> Unit
+    onEffectConsumed: () -> Unit,
 ) {
     val effect by effectFlow.collectAsStateWithLifecycle()
     LaunchedEffect(effect) {

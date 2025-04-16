@@ -4,6 +4,6 @@ interface SpaceXNavigation {
     fun navigate(destination: SpaceXDestination)
 }
 
-sealed interface SpaceXDestination{
-    data class LaunchDetails(val flightNumber: Int): SpaceXDestination
+sealed interface SpaceXDestination {
+    data class LaunchDetails(val flightNumber: Int) : SpaceXDestination
 }

@@ -10,11 +10,11 @@ class NetworkResultCallAdapterFactory : CallAdapter.Factory() {
     override fun get(
         returnType: Type,
         annotations: Array<out Annotation?>,
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): CallAdapter<*, *>? {
         if (Call::class.java != getRawType(returnType)) return null
 
-        check(returnType is ParameterizedType){
+        check(returnType is ParameterizedType) {
             "return type must be parameterized as Call<NetworkResponse<<Foo>> or Call<NetworkResponse<out Foo>>"
         }
 

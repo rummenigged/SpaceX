@@ -6,20 +6,22 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 object DateTimeUtils {
-
     fun convertDate(
         date: String,
         initialFormat: DateFormat = DateFormat.ISO_8601,
-        finalFormat: DateFormat = DateFormat.DATE_AND_TIME_US
-    ): String? = runCatching {
-        val initialFormatter = DateTimeFormatter.ofPattern(initialFormat.format, Locale.getDefault())
-        val finalFormatter = DateTimeFormatter.ofPattern(finalFormat.format, Locale.getDefault())
-        return if (initialFormat == DateFormat.ISO_8601){
-            ZonedDateTime.parse(date, ).format(finalFormatter)
-        }else{
-            LocalDate.parse(date, initialFormatter).format(finalFormatter)
-        }
-    }.getOrNull()
+        finalFormat: DateFormat = DateFormat.DATE_AND_TIME_US,
+    ): String? =
+        runCatching {
+            val initialFormatter = DateTimeFormatter.ofPattern(initialFormat.format, Locale.getDefault())
+            val finalFormatter = DateTimeFormatter.ofPattern(finalFormat.format, Locale.getDefault())
+            return if (initialFormat == DateFormat.ISO_8601)
+                {
+                    ZonedDateTime.parse(date).format(finalFormatter)
+                } else
+                {
+                    LocalDate.parse(date, initialFormatter).format(finalFormatter)
+                }
+        }.getOrNull()
 
     enum class DateFormat(val format: String) {
         ISO_8601("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),

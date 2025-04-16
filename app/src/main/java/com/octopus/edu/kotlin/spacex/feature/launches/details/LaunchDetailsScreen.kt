@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
-import com.octopus.edu.kotlin.spacex.R
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,16 +25,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.octopus.edu.kotlin.spacex.R
 import com.octopus.edu.kotlin.spacex.design.FullScreenCircularProgressIndicator
 import com.octopus.edu.kotlin.spacex.design.SpaceXTopBar
 import com.octopus.edu.kotlin.spacex.feature.common.LaunchedUiEffectHandler
 import kotlinx.coroutines.flow.StateFlow
 
-
 @Composable
 fun LaunchDetailsScreen(
     modifier: Modifier = Modifier,
-    viewModel: LaunchDetailsViewModel = hiltViewModel()
+    viewModel: LaunchDetailsViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.viewStateFlow.collectAsStateWithLifecycle()
 
@@ -44,12 +43,12 @@ fun LaunchDetailsScreen(
     ) { padding ->
         LaunchDetailsScreen(
             modifier = modifier.padding(padding),
-            uiState = viewState
+            uiState = viewState,
         )
 
         EffectHandler(
             effectFlow = viewModel.effect,
-            onEvent = viewModel::processEvent
+            onEvent = viewModel::processEvent,
         )
     }
 }
@@ -57,78 +56,84 @@ fun LaunchDetailsScreen(
 @Composable
 fun EffectHandler(
     effectFlow: StateFlow<UiEffect?>,
-    onEvent: (UiEvent) -> Unit) {
-
+    onEvent: (UiEvent) -> Unit,
+) {
     val currentOnEvent by rememberUpdatedState(onEvent)
 
     LaunchedUiEffectHandler(
         effectFlow = effectFlow,
-        onEffectConsumed = { currentOnEvent(UiEvent.MarkEffectAsConsumed)},
+        onEffectConsumed = { currentOnEvent(UiEvent.MarkEffectAsConsumed) },
         onEffect = { effect ->
-            when(effect){
+            when (effect) {
                 is UiEffect.ShowError -> TODO()
             }
-        }
+        },
     )
 }
 
 @Composable
 fun LaunchDetailsScreen(
     uiState: UiState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    if (uiState.isLoading){
-        FullScreenCircularProgressIndicator()
-    }else{
-        Column(modifier = modifier) {
-            RocketImage(imageUrl = uiState.details?.rocket?.images?.firstOrNull())
+    if (uiState.isLoading)
+        {
+            FullScreenCircularProgressIndicator()
+        } else
+        {
+            Column(modifier = modifier) {
+                RocketImage(imageUrl = uiState.details?.rocket?.images?.firstOrNull())
 
-            uiState.details?.rocket?.name?.let { rocketName ->
-                Spacer(Modifier.height(8.dp))
+                uiState.details?.rocket?.name?.let { rocketName ->
+                    Spacer(Modifier.height(8.dp))
 
-                Text(
-                    text = "Rocket Name: $rocketName"
-                )
-            }
+                    Text(
+                        text = "Rocket Name: $rocketName",
+                    )
+                }
 
-            uiState.details?.missionName?.let { missionName ->
-                Spacer(Modifier.height(8.dp))
+                uiState.details?.missionName?.let { missionName ->
+                    Spacer(Modifier.height(8.dp))
 
-                Text(
-                    text = "Mission Name: $missionName"
-                )
-            }
+                    Text(
+                        text = "Mission Name: $missionName",
+                    )
+                }
 
-            uiState.details?.siteName?.let { siteName ->
-                Spacer(Modifier.height(8.dp))
+                uiState.details?.siteName?.let { siteName ->
+                    Spacer(Modifier.height(8.dp))
 
-                Text(
-                    text = "Site Name: $siteName"
-                )
+                    Text(
+                        text = "Site Name: $siteName",
+                    )
+                }
             }
         }
-    }
-
 }
 
 @Composable
 internal fun RocketImage(
     imageUrl: String?,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier,
+) {
     imageUrl?.let { url ->
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(url)
-                .decoderFactory(SvgDecoder.Factory())
-                .build(),
+            model =
+                ImageRequest.Builder(LocalContext.current)
+                    .data(url)
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
             contentScale = ContentScale.Fit,
-            modifier = modifier
-                .fillMaxWidth(),
-            contentDescription = null
+            modifier =
+                modifier
+                    .fillMaxWidth(),
+            contentDescription = null,
         )
-    } ?: Box(modifier = modifier
-        .size(width = 62.dp, height = 62.dp)
-        .clip(shapes.small)
-        .background(color = colorScheme.onBackground)
+    } ?: Box(
+        modifier =
+            modifier
+                .size(width = 62.dp, height = 62.dp)
+                .clip(shapes.small)
+                .background(color = colorScheme.onBackground),
     )
 }

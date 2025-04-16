@@ -7,24 +7,26 @@ import com.octopus.edu.kotlin.spacex.feature.common.ViewEvent
 import com.octopus.edu.kotlin.spacex.feature.common.ViewState
 
 object LaunchesUiContract {
-
     data class UiState(
         val launches: List<Launch> = listOf<Launch>(),
         val isLoading: Boolean = true,
-    ): ViewState
+    ) : ViewState
 
-    sealed class UiEffect: ViewEffect{
-        data class NavigateToLaunchDetails(val flightNumber: Int): UiEffect()
-        data class ShowError(val message: String): UiEffect()
+    sealed class UiEffect : ViewEffect {
+        data class NavigateToLaunchDetails(val flightNumber: Int) : UiEffect()
+
+        data class ShowError(val message: String) : UiEffect()
     }
 
-    sealed class UiEvent: ViewEvent{
-        data object MarkEffectAsConsumed: UiEvent()
-        data class OnLaunchClicked(val flightNumber: Int): UiEvent()
+    sealed class UiEvent : ViewEvent {
+        data object MarkEffectAsConsumed : UiEvent()
+
+        data class OnLaunchClicked(val flightNumber: Int) : UiEvent()
     }
 
-    internal fun LaunchStatus.getStatusValue() = when (this){
-        is LaunchStatus.Success -> "Success"
-        is LaunchStatus.Failure -> "Failure"
-    }
+    internal fun LaunchStatus.getStatusValue() =
+        when (this) {
+            is LaunchStatus.Success -> "Success"
+            is LaunchStatus.Failure -> "Failure"
+        }
 }

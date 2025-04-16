@@ -13,12 +13,13 @@ data class RocketDetailsDTO(
     @Json(name = "active")
     val isActive: Boolean,
     @Json(name = "flickr_images")
-    val images: List<String>
+    val images: List<String>,
 )
 
-fun RocketDetailsDTO.toDomain(): Rocket = Rocket(
-    id = id,
-    name = name,
-    isActive = isActive,
-    images = images
-)
+fun RocketDetailsDTO.toDomain(): Rocket =
+    Rocket(
+        id = id,
+        name = name,
+        isActive = isActive,
+        images = images,
+    )

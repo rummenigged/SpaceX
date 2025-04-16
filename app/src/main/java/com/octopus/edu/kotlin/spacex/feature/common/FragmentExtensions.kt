@@ -14,21 +14,21 @@ import com.octopus.edu.kotlin.spacex.ui.theme.SpaceXTheme
 @Composable
 fun Fragment.SpaceXThemeWithCompositionsLocals(
     isSystemInDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-){
+    content: @Composable () -> Unit,
+)  {
     CompositionLocalProvider(
-        LocalNavigation provides requireActivity() as SpaceXNavigation
+        LocalNavigation provides requireActivity() as SpaceXNavigation,
     ) {
-        SpaceXTheme(darkTheme = isSystemInDarkTheme){ content() }
+        SpaceXTheme(darkTheme = isSystemInDarkTheme) { content() }
     }
 }
-fun Fragment.setComposableContent(
-    content: @Composable (View) -> Unit
-) = ComposeView(requireContext()).apply {
-    setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-    setContent {
-        SpaceXThemeWithCompositionsLocals {
-            content(this)
+
+fun Fragment.setComposableContent(content: @Composable (View) -> Unit) =
+    ComposeView(requireContext()).apply {
+        setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        setContent {
+            SpaceXThemeWithCompositionsLocals {
+                content(this)
+            }
         }
     }
-}

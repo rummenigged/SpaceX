@@ -22,15 +22,15 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, Effect : Vi
     private val _effect = MutableStateFlow<Effect?>(null)
     val effect = _effect.asStateFlow()
 
-    protected fun setState(reducer: UiState.() -> UiState)  {
+    protected fun setState(reducer: UiState.() -> UiState) {
         _viewStateFlow.update(reducer)
     }
 
-    protected fun setEffect(effect: Effect)  {
+    protected fun setEffect(effect: Effect) {
         _effect.value = effect
     }
 
-    fun markEffectAsConsumed()  {
+    fun markEffectAsConsumed() {
         _effect.value = null
     }
 

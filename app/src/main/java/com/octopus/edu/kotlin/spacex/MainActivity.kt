@@ -11,7 +11,9 @@ import com.octopus.edu.kotlin.spacex.utils.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), SpaceXNavigation {
+class MainActivity :
+    AppCompatActivity(),
+    SpaceXNavigation {
     lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +34,7 @@ class MainActivity : AppCompatActivity(), SpaceXNavigation {
 //        }
     }
 
-    override fun navigate(destination: SpaceXDestination)  {
+    override fun navigate(destination: SpaceXDestination) {
         when (destination) {
             is SpaceXDestination.LaunchDetails -> {
                 findNavController(R.id.mainHost).safelyNavigate(

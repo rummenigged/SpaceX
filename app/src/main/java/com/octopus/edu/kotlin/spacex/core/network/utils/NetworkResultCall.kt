@@ -24,20 +24,19 @@ class NetworkResultCall<T : Any>(
                             response.isSuccessful -> {
                                 val body = response.body()
 
-                                if (body == null)
-                                    {
-                                        callback.onResponse(
-                                            this,
-                                            Response.success(
-                                                NetworkResponse.ApiError(
-                                                    body,
-                                                    code,
-                                                ),
+                                if (body == null) {
+                                    callback.onResponse(
+                                        this,
+                                        Response.success(
+                                            NetworkResponse.ApiError(
+                                                body,
+                                                code,
                                             ),
-                                        )
+                                        ),
+                                    )
 
-                                        return@with
-                                    }
+                                    return@with
+                                }
 
                                 callback.onResponse(
                                     this,

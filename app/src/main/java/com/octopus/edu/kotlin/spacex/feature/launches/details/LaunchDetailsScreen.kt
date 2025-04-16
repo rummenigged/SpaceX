@@ -76,39 +76,37 @@ fun LaunchDetailsScreen(
     uiState: UiState,
     modifier: Modifier = Modifier,
 ) {
-    if (uiState.isLoading)
-        {
-            FullScreenCircularProgressIndicator()
-        } else
-        {
-            Column(modifier = modifier) {
-                RocketImage(imageUrl = uiState.details?.rocket?.images?.firstOrNull())
+    if (uiState.isLoading) {
+        FullScreenCircularProgressIndicator()
+    } else {
+        Column(modifier = modifier) {
+            RocketImage(imageUrl = uiState.details?.rocket?.images?.firstOrNull())
 
-                uiState.details?.rocket?.name?.let { rocketName ->
-                    Spacer(Modifier.height(8.dp))
+            uiState.details?.rocket?.name?.let { rocketName ->
+                Spacer(Modifier.height(8.dp))
 
-                    Text(
-                        text = "Rocket Name: $rocketName",
-                    )
-                }
+                Text(
+                    text = "Rocket Name: $rocketName",
+                )
+            }
 
-                uiState.details?.missionName?.let { missionName ->
-                    Spacer(Modifier.height(8.dp))
+            uiState.details?.missionName?.let { missionName ->
+                Spacer(Modifier.height(8.dp))
 
-                    Text(
-                        text = "Mission Name: $missionName",
-                    )
-                }
+                Text(
+                    text = "Mission Name: $missionName",
+                )
+            }
 
-                uiState.details?.siteName?.let { siteName ->
-                    Spacer(Modifier.height(8.dp))
+            uiState.details?.siteName?.let { siteName ->
+                Spacer(Modifier.height(8.dp))
 
-                    Text(
-                        text = "Site Name: $siteName",
-                    )
-                }
+                Text(
+                    text = "Site Name: $siteName",
+                )
             }
         }
+    }
 }
 
 @Composable

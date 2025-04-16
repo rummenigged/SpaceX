@@ -15,7 +15,7 @@ import com.octopus.edu.kotlin.spacex.ui.theme.SpaceXTheme
 fun Fragment.SpaceXThemeWithCompositionsLocals(
     isSystemInDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
-)  {
+) {
     CompositionLocalProvider(
         LocalNavigation provides requireActivity() as SpaceXNavigation,
     ) {

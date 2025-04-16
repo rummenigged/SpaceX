@@ -20,7 +20,8 @@ class LaunchRepositoryImpl
             withContext(
                 Dispatchers.IO,
             ) {
-                launchApi.getLaunches()
+                launchApi
+                    .getLaunches()
                     .map { output -> output.map { launch -> launch.toDomain() } }
                     .asOperation()
             }
@@ -47,7 +48,7 @@ class LaunchRepositoryImpl
                                         },
                                         patch = launch.links.patch,
                                     )
-                                NetworkResponse<LaunchDetails>.Success(result).asOperation()
+                                NetworkResponse.Success(result).asOperation()
                             }
                             is NetworkResponse.ApiError,
                             is NetworkResponse.NetworkError,

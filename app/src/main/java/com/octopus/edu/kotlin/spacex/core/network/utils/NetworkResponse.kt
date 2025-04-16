@@ -1,16 +1,20 @@
 package com.octopus.edu.kotlin.spacex.core.network.utils
 
 import com.octopus.edu.kotlin.spacex.core.model.ResponseOperation
-import com.octopus.edu.kotlin.spacex.core.model.ResponseOperation.Success
 import com.octopus.edu.kotlin.spacex.core.model.ResponseOperation.Error
+import com.octopus.edu.kotlin.spacex.core.model.ResponseOperation.Success
 import com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse.ApiError
 import okhttp3.ResponseBody
 import java.io.IOException
 
 sealed class NetworkResponse<out T : Any> {
-    data class Success<out T : Any>(val data: T) : NetworkResponse<T>()
+    data class Success<out T : Any>(
+        val data: T,
+    ) : NetworkResponse<T>()
 
-    data class NetworkError(val error: IOException) : NetworkResponse<Nothing>()
+    data class NetworkError(
+        val error: IOException,
+    ) : NetworkResponse<Nothing>()
 
     data class ApiError(
         val body: ResponseBody?,

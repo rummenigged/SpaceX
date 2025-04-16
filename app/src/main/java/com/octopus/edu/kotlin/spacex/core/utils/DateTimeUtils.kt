@@ -14,13 +14,11 @@ object DateTimeUtils {
         runCatching {
             val initialFormatter = DateTimeFormatter.ofPattern(initialFormat.format, Locale.getDefault())
             val finalFormatter = DateTimeFormatter.ofPattern(finalFormat.format, Locale.getDefault())
-            return if (initialFormat == DateFormat.ISO_8601)
-                {
-                    ZonedDateTime.parse(date).format(finalFormatter)
-                } else
-                {
-                    LocalDate.parse(date, initialFormatter).format(finalFormatter)
-                }
+            return if (initialFormat == DateFormat.ISO_8601) {
+                ZonedDateTime.parse(date).format(finalFormatter)
+            } else {
+                LocalDate.parse(date, initialFormatter).format(finalFormatter)
+            }
         }.getOrNull()
 
     enum class DateFormat(val format: String) {

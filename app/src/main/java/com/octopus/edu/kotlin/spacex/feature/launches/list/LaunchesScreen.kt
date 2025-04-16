@@ -85,7 +85,7 @@ fun EffectHandler(
     navigation: SpaceXNavigation,
     effectFlow: StateFlow<LaunchesUiContract.UiEffect?>,
     onEvent: (LaunchesUiContract.UiEvent) -> Unit,
-)  {
+) {
     val currentOnEvent by rememberUpdatedState(onEvent)
     val context = LocalContext.current
     LaunchedUiEffectHandler(
@@ -110,26 +110,24 @@ internal fun LaunchesScreenContent(
     onEvent: (LaunchesUiContract.UiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (uiState.isLoading)
-        {
-            FullScreenCircularProgressIndicator()
-        } else
-        {
-            LazyColumn(
-                modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(all = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(uiState.launches) { item ->
-                    LaunchItem(
-                        item = item,
-                        onItemClicked = { flightNumber ->
-                            onEvent(LaunchesUiContract.UiEvent.OnLaunchClicked(flightNumber))
-                        },
-                    )
-                }
+    if (uiState.isLoading) {
+        FullScreenCircularProgressIndicator()
+    } else {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            contentPadding = PaddingValues(all = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(uiState.launches) { item ->
+                LaunchItem(
+                    item = item,
+                    onItemClicked = { flightNumber ->
+                        onEvent(LaunchesUiContract.UiEvent.OnLaunchClicked(flightNumber))
+                    },
+                )
             }
         }
+    }
 }
 
 @Composable
@@ -172,37 +170,35 @@ fun LaunchPatch(
     modifier: Modifier = Modifier,
     patch: String?,
 ) {
-    if (patch.isNullOrEmpty())
-        {
-            Box(
-                modifier =
-                    modifier
-                        .size(width = 62.dp, height = 62.dp)
-                        .clip(shapes.small)
-                        .background(color = colorScheme.onBackground),
-            )
-        } else
-        {
-            AsyncImage(
-                model =
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(patch)
-                        .decoderFactory(SvgDecoder.Factory())
-                        .build(),
-                contentScale = ContentScale.Fit,
-                modifier =
-                    modifier
-                        .size(62.dp)
-                        .border(
-                            width = 2.dp,
-                            color = colorScheme.onSurfaceVariant,
-                            shape = RoundedCornerShape(8.dp),
-                        )
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(colorScheme.onSurface),
-                contentDescription = null,
-            )
-        }
+    if (patch.isNullOrEmpty()) {
+        Box(
+            modifier =
+                modifier
+                    .size(width = 62.dp, height = 62.dp)
+                    .clip(shapes.small)
+                    .background(color = colorScheme.onBackground),
+        )
+    } else {
+        AsyncImage(
+            model =
+                ImageRequest.Builder(LocalContext.current)
+                    .data(patch)
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
+            contentScale = ContentScale.Fit,
+            modifier =
+                modifier
+                    .size(62.dp)
+                    .border(
+                        width = 2.dp,
+                        color = colorScheme.onSurfaceVariant,
+                        shape = RoundedCornerShape(8.dp),
+                    )
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(colorScheme.onSurface),
+            contentDescription = null,
+        )
+    }
 }
 
 @PreviewLightDark

@@ -63,7 +63,7 @@ class NetworkResultCall<T : Any>(
                     call: Call<T?>,
                     throwable: Throwable,
                 ) {
-                    val networkError =
+                    val error =
                         when (throwable) {
                             is UnknownHostException -> NetworkResponse.NetworkError(throwable)
                             else -> NetworkResponse.ApiError(body = null, throwable = throwable)

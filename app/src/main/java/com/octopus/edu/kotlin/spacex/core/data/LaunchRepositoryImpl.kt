@@ -36,7 +36,7 @@ class LaunchRepositoryImpl
                                 val rocket = rocketDetailsResult.data
                                 val result =
                                     LaunchDetails(
-                                        missionName = launch.name2,
+                                        missionName = launch.name,
                                         flightNumber = launch.flightNumber,
                                         date = launch.date,
                                         siteName = launch.site?.longName.orEmpty(),

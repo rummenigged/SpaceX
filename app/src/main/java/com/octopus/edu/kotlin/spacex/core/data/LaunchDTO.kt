@@ -12,7 +12,7 @@ data class LaunchDTO(
     @Json(name = "flight_number")
     val flightNumber: Int,
     @Json(name = "mission_name")
-    val name2: String,
+    val name: String,
     @Json(name = "launch_date_local")
     val date: String,
     @Json(name = "rocket")
@@ -57,7 +57,7 @@ data class LaunchDTO(
 
 fun LaunchDTO.toDomain(): Launch =
     Launch(
-        missionName = name2,
+        missionName = name,
         flightNumber = flightNumber,
         date = convertDate(date, finalFormat = LONG_DATE_AND_TIME_US).orEmpty(),
         rocketName = this.rocket.name.orEmpty(),

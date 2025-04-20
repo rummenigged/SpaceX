@@ -26,6 +26,5 @@ allprojects {
     ktlint {
         verbose = true
         android = true
-//        disabledRules = ["max-line-length", "import-ordering", "package-name"]
     }
 }

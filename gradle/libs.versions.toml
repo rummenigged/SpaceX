@@ -20,6 +20,7 @@ navigationUiKtx = "2.8.9"
 kspPluginVersion = "2.1.20-2.0.0"
 material = "1.12.0"
 ktlint = "12.2.0"
+ktlintComposeRules = "0.4.22"
 navigationSafeArgsGradlePluginVersion = "2.8.9"
 
 
@@ -62,6 +63,7 @@ coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 
 androidx-navigation-safeArgsGradlePlugin = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationSafeArgsGradlePluginVersion" }
 ktlint-gradlePlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
+ktlint-compose-rules = { module = "io.nlopez.compose.rules:ktlint", version.ref = "ktlintComposeRules" }
 
 
 [plugins]

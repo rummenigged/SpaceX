@@ -7,17 +7,18 @@ data class LaunchDetails(
     val siteName: String,
     val rocket: Rocket,
     val launchStatus: LaunchStatus,
-    val patch: String?
+    val patch: String?,
 ) {
     companion object
 }
 
-fun LaunchDetails.Companion.mock(): LaunchDetails = LaunchDetails(
-    missionName = "Mock Name",
-    flightNumber = 0,
-    date = "Mock Date",
-    siteName = "Site Name",
-    rocket = Rocket.mock(),
-    launchStatus = LaunchStatus.Success,
-    patch = null
-)
+fun LaunchDetails.Companion.mock(): LaunchDetails =
+    LaunchDetails(
+        missionName = "Mock Name",
+        flightNumber = 0,
+        date = "Mock Date",
+        siteName = "Site Name",
+        rocket = Rocket.mock(),
+        launchStatus = LaunchStatus.Success,
+        patch = null,
+    )

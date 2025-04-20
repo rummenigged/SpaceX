@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.octopus.edu.kotlin.spacex.feature.common.setComposableContent
 
-class LaunchDetailsFragment: Fragment() {
-
+class LaunchDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? = setComposableContent { LaunchDetailsScreen() }
-
 }

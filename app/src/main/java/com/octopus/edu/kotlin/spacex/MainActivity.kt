@@ -11,8 +11,9 @@ import com.octopus.edu.kotlin.spacex.utils.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), SpaceXNavigation {
-
+class MainActivity :
+    AppCompatActivity(),
+    SpaceXNavigation {
     lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,29 +34,29 @@ class MainActivity : AppCompatActivity(), SpaceXNavigation {
 //        }
     }
 
-    override fun navigate(destination: SpaceXDestination){
-        when (destination){
+    override fun navigate(destination: SpaceXDestination) {
+        when (destination) {
             is SpaceXDestination.LaunchDetails -> {
                 findNavController(R.id.mainHost).safelyNavigate(
-                    toLaunchDetails(destination.flightNumber)
+                    toLaunchDetails(destination.flightNumber),
                 )
             }
         }
     }
 }
 //
-//@Composable
-//fun Greeting(name: String, modifier: Modifier = Modifier) {
+// @Composable
+// fun Greeting(name: String, modifier: Modifier = Modifier) {
 //    Text(
 //        text = "Hello $name!",
 //        modifier = modifier
 //    )
-//}
+// }
 //
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
+// @Preview(showBackground = true)
+// @Composable
+// fun GreetingPreview() {
 //    SpaceXTheme {
 //        Greeting("Android")
 //    }
-//}
+// }

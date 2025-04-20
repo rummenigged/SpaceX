@@ -7,13 +7,13 @@ import com.octopus.edu.kotlin.spacex.feature.common.ViewState
 
 data class UiState(
     val details: LaunchDetails? = null,
-    val isLoading: Boolean = true
-): ViewState
+    val isLoading: Boolean = true,
+) : ViewState
 
-sealed class UiEvent: ViewEvent{
-    object MarkEffectAsConsumed: UiEvent()
+sealed class UiEvent : ViewEvent {
+    object MarkEffectAsConsumed : UiEvent()
 }
 
-sealed class UiEffect: ViewEffect{
-    data class ShowError(val message: String): UiEffect()
+sealed class UiEffect : ViewEffect {
+    data class ShowError(val message: String) : UiEffect()
 }

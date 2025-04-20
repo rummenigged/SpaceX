@@ -14,11 +14,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class LaunchesDataModule {
-
     @Binds
     abstract fun launchesRepository(repository: LaunchRepositoryImpl): LaunchRepository
 
-    companion object{
+    companion object {
         @Provides
         @Singleton
         fun launchesApi(retrofit: Retrofit): LaunchesApi = retrofit.create(LaunchesApi::class.java)

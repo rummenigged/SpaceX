@@ -7,59 +7,72 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.net.UnknownHostException
 
-
-class NetworkResultCall<T: Any>(
-    private val call: Call<T>
+class NetworkResultCall<T : Any>(
+    private val call: Call<T>,
 ) : Call<NetworkResponse<T>> {
-
     override fun enqueue(callback: Callback<NetworkResponse<T>>) =
-        call.enqueue(object : Callback<T>{
-            override fun onResponse(call: Call<T>, response: Response<T>) {
-                val code = response.code()
+        call.enqueue(
+            object : Callback<T> {
+                override fun onResponse(
+                    call: Call<T>,
+                    response: Response<T>,
+                ) {
+                    val code = response.code()
 
-                with(this@NetworkResultCall){
-                    when {
-                        response.isSuccessful -> {
-                            val body = response.body()
+                    with(this@NetworkResultCall) {
+                        when {
+                            response.isSuccessful -> {
+                                val body = response.body()
 
-                            if (body == null){
+                                if (body == null) {
+                                    callback.onResponse(
+                                        this,
+                                        Response.success(
+                                            NetworkResponse.ApiError(
+                                                body,
+                                                code,
+                                            ),
+                                        ),
+                                    )
+
+                                    return@with
+                                }
+
                                 callback.onResponse(
                                     this,
-                                    Response.success(NetworkResponse.ApiError(
-                                        body, code
-                                    ))
+                                    Response.success(NetworkResponse.Success(body)),
                                 )
-
-                                return@with
                             }
 
-                            callback.onResponse(
-                                this,
-                                Response.success(NetworkResponse.Success(body))
-                            )
-                        }
-
-                        else -> {
-                            callback.onResponse(
-                                this,
-                                Response.success(NetworkResponse.ApiError(
-                                    response.errorBody(), code
-                                ))
-                            )
+                            else -> {
+                                callback.onResponse(
+                                    this,
+                                    Response.success(
+                                        NetworkResponse.ApiError(
+                                            response.errorBody(),
+                                            code,
+                                        ),
+                                    ),
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<T?>, throwable: Throwable) {
-                val networkError = when (throwable){
-                    is UnknownHostException -> NetworkResponse.NetworkError(throwable)
-                    else -> NetworkResponse.ApiError(body = null, throwable = throwable)
+                override fun onFailure(
+                    call: Call<T?>,
+                    throwable: Throwable,
+                ) {
+                    val error =
+                        when (throwable) {
+                            is UnknownHostException -> NetworkResponse.NetworkError(throwable)
+                            else -> NetworkResponse.ApiError(body = null, throwable = throwable)
+                        }
+
+                    callback.onFailure(this@NetworkResultCall, throwable)
                 }
-
-                callback.onFailure(this@NetworkResultCall, throwable)
-            }
-        })
+            },
+        )
 
     override fun execute(): Response<NetworkResponse<T>?> {
         TODO("Not yet implemented")

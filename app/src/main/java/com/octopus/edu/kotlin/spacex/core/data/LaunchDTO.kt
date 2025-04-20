@@ -23,25 +23,25 @@ data class LaunchDTO(
     val launchFailureDetails: LaunchFailureDetails?,
     @Json(name = "launch_site")
     val site: Site?,
-    val links: Links
+    val links: Links,
 ) {
     @JsonClass(generateAdapter = true)
     data class RocketDTO(
         @Json(name = "rocket_id")
         val id: String?,
         @Json(name = "rocket_name")
-        val name: String?
+        val name: String?,
     )
 
     @JsonClass(generateAdapter = true)
     data class LaunchFailureDetails(
-        val reason: String?
+        val reason: String?,
     )
 
     @JsonClass(generateAdapter = true)
     data class Links(
         @Json(name = "mission_patch_small")
-        val patch: String?
+        val patch: String?,
     )
 
     @JsonClass(generateAdapter = true)
@@ -51,16 +51,21 @@ data class LaunchDTO(
         @Json(name = "site_name")
         val name: String,
         @Json(name = "site_name_long")
-        val longName: String
+        val longName: String,
     )
 }
 
-fun LaunchDTO.toDomain(): Launch = Launch(
-    missionName = name,
-    flightNumber = flightNumber,
-    date = convertDate(date, finalFormat = LONG_DATE_AND_TIME_US).orEmpty(),
-    rocketName = this.rocket.name.orEmpty(),
-    launchStatus = if (isLaunchSuccess == true) LaunchStatus.Success
-    else LaunchStatus.Failure(launchFailureDetails?.reason.orEmpty()),
-    patch = links.patch
-)
+fun LaunchDTO.toDomain(): Launch =
+    Launch(
+        missionName = name,
+        flightNumber = flightNumber,
+        date = convertDate(date, finalFormat = LONG_DATE_AND_TIME_US).orEmpty(),
+        rocketName = this.rocket.name.orEmpty(),
+        launchStatus =
+            if (isLaunchSuccess == true) {
+                LaunchStatus.Success
+            } else {
+                LaunchStatus.Failure(launchFailureDetails?.reason.orEmpty())
+            },
+        patch = links.patch,
+    )

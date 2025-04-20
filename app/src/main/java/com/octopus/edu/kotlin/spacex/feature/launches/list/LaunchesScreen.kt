@@ -1,7 +1,6 @@
 package com.octopus.edu.kotlin.spacex.feature.launches.list
 
 import android.widget.Toast
-import com.octopus.edu.kotlin.spacex.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -39,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.octopus.edu.kotlin.spacex.R
 import com.octopus.edu.kotlin.spacex.core.model.Launch
 import com.octopus.edu.kotlin.spacex.core.model.mock
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXDestination
@@ -58,24 +58,24 @@ import okhttp3.internal.toImmutableList
 internal fun LaunchesScreen(
     modifier: Modifier = Modifier,
     navigation: SpaceXNavigation = LocalNavigation.current,
-    viewModel: LaunchesViewModel = hiltViewModel()
+    viewModel: LaunchesViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.viewStateFlow.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = modifier,
-        topBar = { SpaceXTopBar(title = R.string.launch_list_title) }
+        topBar = { SpaceXTopBar(title = R.string.launch_list_title) },
     ) { padding ->
         LaunchesScreenContent(
             modifier = modifier.padding(padding),
             uiState = viewState,
-            onEvent = viewModel::processEvent
+            onEvent = viewModel::processEvent,
         )
 
         EffectHandler(
             effectFlow = viewModel.effect,
             navigation = navigation,
-            onEvent = viewModel::processEvent
+            onEvent = viewModel::processEvent,
         )
     }
 }
@@ -84,14 +84,15 @@ internal fun LaunchesScreen(
 fun EffectHandler(
     navigation: SpaceXNavigation,
     effectFlow: StateFlow<LaunchesUiContract.UiEffect?>,
-    onEvent: (LaunchesUiContract.UiEvent) -> Unit){
+    onEvent: (LaunchesUiContract.UiEvent) -> Unit,
+) {
     val currentOnEvent by rememberUpdatedState(onEvent)
     val context = LocalContext.current
     LaunchedUiEffectHandler(
         effectFlow = effectFlow,
-        onEffectConsumed = { currentOnEvent(LaunchesUiContract.UiEvent.MarkEffectAsConsumed)},
+        onEffectConsumed = { currentOnEvent(LaunchesUiContract.UiEvent.MarkEffectAsConsumed) },
         onEffect = { effect ->
-            when(effect){
+            when (effect) {
                 is LaunchesUiContract.UiEffect.ShowError -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
@@ -99,29 +100,30 @@ fun EffectHandler(
                 is LaunchesUiContract.UiEffect.NavigateToLaunchDetails ->
                     navigation.navigate(SpaceXDestination.LaunchDetails(effect.flightNumber))
             }
-        }
+        },
     )
 }
+
 @Composable
-internal fun LaunchesScreenContent (
+internal fun LaunchesScreenContent(
     uiState: LaunchesUiContract.UiState,
     onEvent: (LaunchesUiContract.UiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (uiState.isLoading){
+    if (uiState.isLoading) {
         FullScreenCircularProgressIndicator()
-    }else{
+    } else {
         LazyColumn(
             modifier = modifier.fillMaxSize(),
             contentPadding = PaddingValues(all = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(uiState.launches){ item ->
+            items(uiState.launches) { item ->
                 LaunchItem(
                     item = item,
                     onItemClicked = { flightNumber ->
                         onEvent(LaunchesUiContract.UiEvent.OnLaunchClicked(flightNumber))
-                    }
+                    },
                 )
             }
         }
@@ -132,9 +134,9 @@ internal fun LaunchesScreenContent (
 internal fun LaunchItem(
     item: Launch,
     onItemClicked: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier.clickable { onItemClicked(item.flightNumber) }){
+    Row(modifier = modifier.clickable { onItemClicked(item.flightNumber) }) {
         LaunchPatch(patch = item.patch)
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -144,53 +146,57 @@ internal fun LaunchItem(
                 text = "${item.missionName} - ${item.rocketName}",
                 style = Typography.bodyMedium,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = item.date,
-                style = Typography.bodySmall
+                style = Typography.bodySmall,
             )
         }
 
         Spacer(modifier = Modifier.width(4.dp))
-       Text(
-           text = item.launchStatus.getStatusValue(),
-           style = Typography.labelSmall
-       )
+        Text(
+            text = item.launchStatus.getStatusValue(),
+            style = Typography.labelSmall,
+        )
     }
 }
 
 @Composable
 fun LaunchPatch(
     modifier: Modifier = Modifier,
-    patch: String?
+    patch: String?,
 ) {
-    if (patch.isNullOrEmpty()){
-        Box(modifier = modifier
-            .size(width = 62.dp, height = 62.dp)
-            .clip(shapes.small)
-            .background(color = colorScheme.onBackground)
+    if (patch.isNullOrEmpty()) {
+        Box(
+            modifier =
+                modifier
+                    .size(width = 62.dp, height = 62.dp)
+                    .clip(shapes.small)
+                    .background(color = colorScheme.onBackground),
         )
-    }else{
+    } else {
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(patch)
-                .decoderFactory(SvgDecoder.Factory())
-                .build(),
+            model =
+                ImageRequest.Builder(LocalContext.current)
+                    .data(patch)
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
             contentScale = ContentScale.Fit,
-            modifier = modifier
-                .size(62.dp)
-                .border(
-                    width = 2.dp,
-                    color = colorScheme.onSurfaceVariant,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .clip(RoundedCornerShape(8.dp))
-                .background(colorScheme.onSurface),
-            contentDescription = null
+            modifier =
+                modifier
+                    .size(62.dp)
+                    .border(
+                        width = 2.dp,
+                        color = colorScheme.onSurfaceVariant,
+                        shape = RoundedCornerShape(8.dp),
+                    )
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(colorScheme.onSurface),
+            contentDescription = null,
         )
     }
 }
@@ -207,12 +213,13 @@ private fun LeaguesScreenPreview() {
     SpaceXTheme {
         Scaffold { padding ->
             LaunchesScreenContent(
-                uiState = LaunchesUiContract.UiState(
-                    isLoading = false,
-                    launches = listOf(Launch.mock()).toImmutableList()
-                ),
+                uiState =
+                    LaunchesUiContract.UiState(
+                        isLoading = false,
+                        launches = listOf(Launch.mock()).toImmutableList(),
+                    ),
                 onEvent = {},
-                modifier = Modifier.padding(padding)
+                modifier = Modifier.padding(padding),
             )
         }
     }

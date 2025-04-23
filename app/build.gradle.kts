@@ -55,9 +55,12 @@ android {
         }
     }
 
-//    lint {
-//        checkDependencies = true
-//    }
+    lint {
+        warningsAsErrors = true
+        checkDependencies = true
+        disable += "AndroidGradlePluginVersion"
+        disable += "GradleDependency"
+    }
 }
 
 tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> {

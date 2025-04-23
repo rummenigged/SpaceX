@@ -1,4 +1,4 @@
-name: Ktlint Check
+name: Lint
 on:
   pull_request:
     branches: ["master"]
@@ -16,5 +16,11 @@ jobs:
         with:
           ktlint_version: '0.40.0'
 
-      - run: ktlint --version
-        shell: bash
+      - name: "Run Ktlint"
+        run: ./gradlew ktlintCheck
+
+      - name: "Run Android Lint"
+        run: ./gradlew lintDebug
+
+      - name: "Upload Ktlint report"
+        uses: actions/upload-artifact@v2

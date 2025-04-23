@@ -1,0 +1,5 @@
+<lint>
+    <issue id="OldTargetApi">
+        <ignore path="build.gradle"/>
+    </issue>
+</lint>

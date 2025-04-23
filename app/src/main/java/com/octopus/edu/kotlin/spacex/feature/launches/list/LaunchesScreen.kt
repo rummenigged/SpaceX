@@ -181,7 +181,8 @@ fun LaunchPatch(
     } else {
         AsyncImage(
             model =
-                ImageRequest.Builder(LocalContext.current)
+                ImageRequest
+                    .Builder(LocalContext.current)
                     .data(patch)
                     .decoderFactory(SvgDecoder.Factory())
                     .build(),
@@ -193,8 +194,7 @@ fun LaunchPatch(
                         width = 2.dp,
                         color = colorScheme.onSurfaceVariant,
                         shape = RoundedCornerShape(8.dp),
-                    )
-                    .clip(RoundedCornerShape(8.dp))
+                    ).clip(RoundedCornerShape(8.dp))
                     .background(colorScheme.onSurface),
             contentDescription = null,
         )
@@ -203,7 +203,7 @@ fun LaunchPatch(
 
 @PreviewLightDark
 @Composable
-fun LeagueItemPreview() {
+private fun LeagueItemPreview() {
     LaunchItem(item = Launch.mock(), onItemClicked = {})
 }
 

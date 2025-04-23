@@ -1,6 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">SpaceX</string>
     <string name="launch_list_title">Latest Launches</string>
     <string name="details_title">Details</string>
-    <string tools:ignore="UnusedResources" name="unused_string">Details</string>
 </resources>

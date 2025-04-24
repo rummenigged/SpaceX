@@ -2,7 +2,7 @@ name: Test
 
 on:
   pull_request:
-    branches: ["master","develop"]
+    branches: ["master", "develop"]
   push:
     branches: ["master", "develop"]
 
@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    needs: build
+    needs: Build with Gradle
 
     steps:
       - name: Checkout
@@ -25,5 +25,5 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
+      - name: Test
         run: ./gradlew testDebugUnitTest

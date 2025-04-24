@@ -1,0 +1,23 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "build(actions-deps)"
+      prefix-development: "build(actions-deps-dev)"
+    reviewers:
+      - "rummenigged"
+
+  # Maintain dependencies for Gradle
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "build(gradle-deps)"
+      prefix-development: "build(gradle-deps-dev)"
+    reviewers:
+      - "rummenigged"

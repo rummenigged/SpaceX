@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Scaffold
@@ -80,7 +79,13 @@ fun LaunchDetailsScreen(
         FullScreenCircularProgressIndicator()
     } else {
         Column(modifier = modifier) {
-            RocketImage(imageUrl = uiState.details?.rocket?.images?.firstOrNull())
+            RocketImage(
+                imageUrl =
+                    uiState.details
+                        ?.rocket
+                        ?.images
+                        ?.firstOrNull(),
+            )
 
             uiState.details?.rocket?.name?.let { rocketName ->
                 Spacer(Modifier.height(8.dp))
@@ -117,7 +122,8 @@ internal fun RocketImage(
     imageUrl?.let { url ->
         AsyncImage(
             model =
-                ImageRequest.Builder(LocalContext.current)
+                ImageRequest
+                    .Builder(LocalContext.current)
                     .data(url)
                     .decoderFactory(SvgDecoder.Factory())
                     .build(),
@@ -130,7 +136,7 @@ internal fun RocketImage(
     } ?: Box(
         modifier =
             modifier
-                .size(width = 62.dp, height = 62.dp)
+                .fillMaxWidth()
                 .clip(shapes.small)
                 .background(color = colorScheme.onBackground),
     )

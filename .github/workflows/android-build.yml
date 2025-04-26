@@ -1,20 +1,20 @@
-name: Android Build
+name: Build
 
 on:
   pull_request:
-    branches: ["master"]
+    branches: ["master", "develop"]
   push:
-    branches: ["master"]
+    branches: ["master", "develop"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v4.0.0
+        uses: actions/setup-java@v4.7.1
         with:
           java-version: '17'
           distribution: 'adopt'
@@ -24,9 +24,6 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
-
-      - name: Build with Gradle
-        run: ./gradlew testDebugUnitTest
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4

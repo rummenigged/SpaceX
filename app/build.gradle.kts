@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.googleService)
+    alias(libs.plugins.google.firebase.appdistribution)
+    alias(libs.plugins.firebase.crashlyticsGradlePlugin)
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp")
 }
@@ -30,6 +33,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+        }
+
+        debug {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
         }
     }
 
@@ -96,6 +104,11 @@ dependencies {
 //    Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
+
+//    Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlyticsKtx)
+    implementation(libs.firebase.analyticsKtx)
 
     testImplementation(libs.test.konsist)
     testImplementation(libs.test.junit)

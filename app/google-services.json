@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "618924679179",
+    "project_id": "spacex-sandbox",
+    "storage_bucket": "spacex-sandbox.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618924679179:android:3966dd3a23a99bcd34e70e",
+        "android_client_info": {
+          "package_name": "com.octopus.edu.kotlin.spacex.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFbCcAGTErkQSe612Da3TCtXmH694J2uA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

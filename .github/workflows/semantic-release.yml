@@ -24,9 +24,9 @@ jobs:
 
       # Step 2 Setup Ruby
       - name: Setup Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4.3'
+          ruby-version: '2.6'
 
       # Step 3 Install the bundler & Fastlane (Create environment for ruby to avoid dependency hell and manage the dependencies versions)
       - name: Install bundler

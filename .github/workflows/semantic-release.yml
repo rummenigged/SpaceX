@@ -15,12 +15,27 @@ jobs:
       contents: write
 
     steps:
+      # Step 1 Checkout Repository
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
 
+      # Step 2 Setup Ruby
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '3.4.3'
+
+      # Step 3 Install the bundler & Fastlane (Create environment for ruby to avoid dependency hell and manage the dependencies versions)
+      - name: Install bundler
+        run: |
+          gem install bundler:2.2.27
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      # Step 4 Execute Semantic Release
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         with:

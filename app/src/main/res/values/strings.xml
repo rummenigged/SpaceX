@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpaceX</string>
+    <string name="app_name">SpaceX(Debug)</string>
     <string name="launch_list_title">Latest Launches</string>
     <string name="details_title">Details</string>
 </resources>

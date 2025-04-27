@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.google.firebase.appdistribution) apply false
     alias(libs.plugins.firebase.crashlyticsGradlePlugin) apply false
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.android.library) apply false
 }
 
 buildscript {
@@ -20,6 +21,17 @@ buildscript {
     dependencies {
         classpath(libs.androidx.navigation.safeArgsGradlePlugin)
         classpath(libs.ktlint.gradlePlugin)
+    }
+
+    extra.apply {
+        set("applicationId", "com.octopus.edu.kotlin.spacex")
+        set("compileSdkVersion", 35)
+        set("targetSdkVersion", 35)
+        set("minSdkVersion", 28)
+
+        set("sourceCompatibility", JavaVersion.VERSION_11)
+        set("targetCompatibility", JavaVersion.VERSION_11)
+        set("kotlinOptionsJVMTarget", "11")
     }
 }
 

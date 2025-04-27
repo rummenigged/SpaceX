@@ -38,18 +38,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.octopus.edu.kotlin.design.designSystem.components.FullScreenCircularProgressIndicator
+import com.octopus.edu.kotlin.design.designSystem.components.SpaceXTopBar
+import com.octopus.edu.kotlin.design.designSystem.theme.SpaceXTheme
+import com.octopus.edu.kotlin.design.designSystem.theme.Typography
 import com.octopus.edu.kotlin.spacex.R
 import com.octopus.edu.kotlin.spacex.core.model.Launch
 import com.octopus.edu.kotlin.spacex.core.model.mock
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXDestination
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXNavigation
 import com.octopus.edu.kotlin.spacex.core.ui.common.LocalNavigation
-import com.octopus.edu.kotlin.spacex.design.FullScreenCircularProgressIndicator
-import com.octopus.edu.kotlin.spacex.design.SpaceXTopBar
 import com.octopus.edu.kotlin.spacex.feature.common.LaunchedUiEffectHandler
 import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.getStatusValue
-import com.octopus.edu.kotlin.spacex.ui.theme.SpaceXTheme
-import com.octopus.edu.kotlin.spacex.ui.theme.Typography
 import kotlinx.coroutines.flow.StateFlow
 import okhttp3.internal.toImmutableList
 
@@ -64,7 +64,9 @@ internal fun LaunchesScreen(
 
     Scaffold(
         modifier = modifier,
-        topBar = { SpaceXTopBar(title = R.string.launch_list_title) },
+        topBar = {
+            SpaceXTopBar(title = R.string.launch_list_title)
+        },
     ) { padding ->
         LaunchesScreenContent(
             modifier = modifier.padding(padding),
@@ -114,7 +116,7 @@ internal fun LaunchesScreenContent(
         FullScreenCircularProgressIndicator()
     } else {
         LazyColumn(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize().background(colorScheme.background),
             contentPadding = PaddingValues(all = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {

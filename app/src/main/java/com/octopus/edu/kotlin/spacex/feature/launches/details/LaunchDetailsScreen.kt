@@ -24,9 +24,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.octopus.edu.kotlin.design.designSystem.components.FullScreenCircularProgressIndicator
+import com.octopus.edu.kotlin.design.designSystem.components.SpaceXTopBar
 import com.octopus.edu.kotlin.spacex.R
-import com.octopus.edu.kotlin.spacex.design.FullScreenCircularProgressIndicator
-import com.octopus.edu.kotlin.spacex.design.SpaceXTopBar
 import com.octopus.edu.kotlin.spacex.feature.common.LaunchedUiEffectHandler
 import kotlinx.coroutines.flow.StateFlow
 
@@ -38,7 +38,9 @@ fun LaunchDetailsScreen(
     val viewState by viewModel.viewStateFlow.collectAsStateWithLifecycle()
 
     Scaffold(
-        topBar = { SpaceXTopBar(R.string.details_title) },
+        topBar = {
+            SpaceXTopBar(R.string.details_title)
+        },
     ) { padding ->
         LaunchDetailsScreen(
             modifier = modifier.padding(padding),

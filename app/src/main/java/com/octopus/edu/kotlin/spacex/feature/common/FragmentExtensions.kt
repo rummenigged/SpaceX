@@ -7,9 +7,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import com.octopus.edu.kotlin.design.designSystem.theme.SpaceXTheme
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXNavigation
 import com.octopus.edu.kotlin.spacex.core.ui.common.LocalNavigation
-import com.octopus.edu.kotlin.spacex.ui.theme.SpaceXTheme
 
 @Composable
 fun Fragment.SpaceXThemeWithCompositionsLocals(
@@ -19,7 +19,10 @@ fun Fragment.SpaceXThemeWithCompositionsLocals(
     CompositionLocalProvider(
         LocalNavigation provides requireActivity() as SpaceXNavigation,
     ) {
-        SpaceXTheme(darkTheme = isSystemInDarkTheme) { content() }
+        SpaceXTheme(
+            darkTheme = isSystemInDarkTheme,
+            dynamicColor = false,
+        ) { content() }
     }
 }
 

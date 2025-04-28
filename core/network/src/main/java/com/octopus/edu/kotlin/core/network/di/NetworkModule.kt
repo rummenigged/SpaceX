@@ -1,7 +1,7 @@
 package com.octopus.edu.kotlin.core.network.di
 
+import com.adgem.cosmicrewards.core.network.BuildConfig
 import com.octopus.edu.kotlin.core.network.utils.NetworkResultCallAdapterFactory
-import com.octopus.edu.kotlin.spacex.BuildConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

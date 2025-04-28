@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = rootProject.ext["applicationId"].toString()
+    namespace = "com.adgem.cosmicrewards.core.domain.models"
     compileSdk = rootProject.ext["compileSdkVersion"].toString().toInt()
 
     defaultConfig {

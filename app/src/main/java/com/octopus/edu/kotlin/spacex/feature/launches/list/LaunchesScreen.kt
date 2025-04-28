@@ -38,10 +38,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import com.octopus.edu.kotlin.design.designSystem.components.FullScreenCircularProgressIndicator
-import com.octopus.edu.kotlin.design.designSystem.components.SpaceXTopBar
-import com.octopus.edu.kotlin.design.designSystem.theme.SpaceXTheme
-import com.octopus.edu.kotlin.design.designSystem.theme.Typography
+import com.octopus.edu.kotlin.core.design.designSystem.components.FullScreenCircularProgressIndicator
+import com.octopus.edu.kotlin.core.design.designSystem.components.SpaceXTopBar
+import com.octopus.edu.kotlin.core.design.designSystem.theme.SpaceXTheme
+import com.octopus.edu.kotlin.core.design.designSystem.theme.Typography
 import com.octopus.edu.kotlin.spacex.R
 import com.octopus.edu.kotlin.spacex.core.model.Launch
 import com.octopus.edu.kotlin.spacex.core.model.mock

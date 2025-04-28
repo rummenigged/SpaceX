@@ -2,8 +2,9 @@ package com.octopus.edu.kotlin.spacex.feature.launches.list
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.octopus.edu.kotlin.spacex.core.data.LaunchRepository
-import com.octopus.edu.kotlin.spacex.core.model.ResponseOperation
+import com.octopus.edu.kotlin.core.data.launches.LaunchRepository
+import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Error
+import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Success
 import com.octopus.edu.kotlin.spacex.feature.common.BaseViewModel
 import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.UiEffect
 import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.UiEvent
@@ -25,12 +26,15 @@ class LaunchesViewModel
 
         private fun getAllLaunches() =
             viewModelScope.launch {
-                when (val result = launchRepository.getAllLaunches()) {
-                    is ResponseOperation.Success -> {
+                when (
+                    val result =
+                        launchRepository.getAllLaunches()
+                ) {
+                    is Success -> {
                         setState { copy(launches = result.data, isLoading = false) }
                     }
 
-                    is ResponseOperation.Error -> {
+                    is Error -> {
                         setEffect(UiEffect.ShowError(result.message.toString()))
                     }
                 }

@@ -1,9 +1,11 @@
-package com.octopus.edu.kotlin.spacex.core.model
+package com.octopus.edu.kotlin.core.domain.models.launch
 
-sealed class LaunchStatus() {
+sealed class LaunchStatus {
     data object Success : LaunchStatus()
 
-    data class Failure(val reason: String) : LaunchStatus()
+    data class Failure(
+        val reason: String,
+    ) : LaunchStatus()
 }
 
 data class Launch(

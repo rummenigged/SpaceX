@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.spacex.core.model
+package com.octopus.edu.kotlin.core.domain.models.rocket
 
 data class Rocket(
     val id: String,

@@ -42,9 +42,9 @@ import com.octopus.edu.kotlin.core.design.designSystem.components.FullScreenCirc
 import com.octopus.edu.kotlin.core.design.designSystem.components.SpaceXTopBar
 import com.octopus.edu.kotlin.core.design.designSystem.theme.SpaceXTheme
 import com.octopus.edu.kotlin.core.design.designSystem.theme.Typography
+import com.octopus.edu.kotlin.core.domain.models.launch.Launch
+import com.octopus.edu.kotlin.core.domain.models.launch.mock
 import com.octopus.edu.kotlin.spacex.R
-import com.octopus.edu.kotlin.spacex.core.model.Launch
-import com.octopus.edu.kotlin.spacex.core.model.mock
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXDestination
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXNavigation
 import com.octopus.edu.kotlin.spacex.core.ui.common.LocalNavigation

@@ -1,4 +1,7 @@
-package com.octopus.edu.kotlin.spacex.core.model
+package com.octopus.edu.kotlin.core.domain.models.launch
+
+import com.octopus.edu.kotlin.core.domain.models.rocket.Rocket
+import com.octopus.edu.kotlin.core.domain.models.rocket.mock
 
 data class LaunchDetails(
     val missionName: String,
@@ -18,7 +21,7 @@ fun LaunchDetails.Companion.mock(): LaunchDetails =
         flightNumber = 0,
         date = "Mock Date",
         siteName = "Site Name",
-        rocket = Rocket.mock(),
+        rocket = Rocket.Companion.mock(),
         launchStatus = LaunchStatus.Success,
         patch = null,
     )

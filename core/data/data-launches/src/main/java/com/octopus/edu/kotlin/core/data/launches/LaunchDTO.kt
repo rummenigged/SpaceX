@@ -1,9 +1,5 @@
-package com.octopus.edu.kotlin.spacex.core.data
+package com.octopus.edu.kotlin.core.data.launches
 
-import com.octopus.edu.kotlin.spacex.core.model.Launch
-import com.octopus.edu.kotlin.spacex.core.model.LaunchStatus
-import com.octopus.edu.kotlin.spacex.core.utils.DateTimeUtils.DateFormat.LONG_DATE_AND_TIME_US
-import com.octopus.edu.kotlin.spacex.core.utils.DateTimeUtils.convertDate
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -59,13 +55,19 @@ fun LaunchDTO.toDomain(): Launch =
     Launch(
         missionName = name,
         flightNumber = flightNumber,
-        date = convertDate(date, finalFormat = LONG_DATE_AND_TIME_US).orEmpty(),
+        date =
+            com.octopus.edu.kotlin.spacex.core.utils.DateTimeUtils
+                .convertDate(
+                    date,
+                    finalFormat = com.octopus.edu.kotlin.spacex.core.utils.DateTimeUtils.DateFormat.LONG_DATE_AND_TIME_US,
+                ).orEmpty(),
         rocketName = this.rocket.name.orEmpty(),
         launchStatus =
             if (isLaunchSuccess == true) {
                 LaunchStatus.Success
             } else {
-                LaunchStatus.Failure(launchFailureDetails?.reason.orEmpty())
+                LaunchStatus
+                    .Failure(launchFailureDetails?.reason.orEmpty())
             },
         patch = links.patch,
     )

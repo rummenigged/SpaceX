@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.core.data.launches
+package com.octopus.edu.kotlin.core.data.launches.utils
 
 import java.time.LocalDate
 import java.time.ZonedDateTime

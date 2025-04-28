@@ -1,7 +1,7 @@
 package com.octopus.edu.kotlin.core.data.launches.di
 
 import com.octopus.edu.kotlin.core.data.launches.LaunchRepositoryImpl
-import com.octopus.edu.kotlin.core.data.launches.LaunchesApi
+import com.octopus.edu.kotlin.core.data.launches.api.LaunchesApi
 import com.octopus.edu.kotlin.core.domain.repository.LaunchRepository
 import dagger.Binds
 import dagger.Module

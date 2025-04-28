@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.core.data.launches
+package com.octopus.edu.kotlin.core.data.launches.dto
 
 import com.octopus.edu.kotlin.core.domain.models.rocket.Rocket
 import com.squareup.moshi.Json

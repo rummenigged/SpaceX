@@ -1,6 +1,6 @@
 package com.octopus.edu.kotlin.core.data.launches.di
 
-import com.octopus.edu.kotlin.core.data.launches.RocketApi
+import com.octopus.edu.kotlin.core.data.launches.api.RocketApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

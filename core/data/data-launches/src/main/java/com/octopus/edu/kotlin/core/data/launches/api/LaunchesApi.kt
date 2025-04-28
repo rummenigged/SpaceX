@@ -1,5 +1,6 @@
-package com.octopus.edu.kotlin.core.data.launches
+package com.octopus.edu.kotlin.core.data.launches.api
 
+import com.octopus.edu.kotlin.core.data.launches.dto.LaunchDTO
 import com.octopus.edu.kotlin.core.network.utils.NetworkResponse
 import retrofit2.http.GET
 import retrofit2.http.Path

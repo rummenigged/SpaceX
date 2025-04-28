@@ -22,8 +22,6 @@ android {
         versionName = "0.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "SERVER_ROUTE", "\"https://api.spacexdata.com/v3/\"")
     }
 
     buildTypes {
@@ -79,6 +77,8 @@ dependencies {
 
 //    Modules
     implementation(project(":core:design"))
+    implementation(project(":core:domain:models"))
+    implementation(project(":core:data:data-launches"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -88,14 +88,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.material)
     implementation(libs.androidx.navigation.fragment.ktx)
-
-//    Network
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.converter)
-    implementation(libs.moshi.kotlinCodeGen)
-    implementation(libs.retrofit)
-    implementation(libs.okhttp.core)
-    implementation(libs.okhttp.logging)
 
 //    Hilt
     implementation(libs.hilt.android)

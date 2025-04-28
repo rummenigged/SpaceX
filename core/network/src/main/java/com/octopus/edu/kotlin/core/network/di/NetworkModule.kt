@@ -1,7 +1,7 @@
-package com.octopus.edu.kotlin.spacex.core.network.di
+package com.octopus.edu.kotlin.core.network.di
 
+import com.octopus.edu.kotlin.core.network.utils.NetworkResultCallAdapterFactory
 import com.octopus.edu.kotlin.spacex.BuildConfig
-import com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResultCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -27,14 +27,16 @@ class NetworkModule {
     @Provides
     @Singleton
     fun buildHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
-        OkHttpClient.Builder()
+        OkHttpClient
+            .Builder()
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
     @Provides
     @Singleton
     fun buildMoshi(): Moshi =
-        Moshi.Builder()
+        Moshi
+            .Builder()
             .addLast(KotlinJsonAdapterFactory())
             .build()
 
@@ -44,7 +46,8 @@ class NetworkModule {
         okHttpClient: OkHttpClient,
         moshi: Moshi,
     ): Retrofit =
-        Retrofit.Builder()
+        Retrofit
+            .Builder()
             .baseUrl(BuildConfig.SERVER_ROUTE)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(NetworkResultCallAdapterFactory())

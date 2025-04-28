@@ -1,7 +1,5 @@
-package com.octopus.edu.kotlin.spacex.core.network.utils
+package com.octopus.edu.kotlin.core.network.utils
 
-import okhttp3.Request
-import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -74,31 +72,18 @@ class NetworkResultCall<T : Any>(
             },
         )
 
-    override fun execute(): Response<NetworkResponse<T>?> {
-        TODO("Not yet implemented")
-    }
+    override fun execute(): Response<NetworkResponse<T>?> =
+        throw UnsupportedOperationException("NetworkResponseCall doesn't support execute")
 
-    override fun isExecuted(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun isExecuted() = call.isExecuted
 
-    override fun cancel() {
-        TODO("Not yet implemented")
-    }
+    override fun cancel() = call.cancel()
 
-    override fun isCanceled(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun isCanceled() = call.isCanceled
 
-    override fun clone(): Call<NetworkResponse<T>?> {
-        TODO("Not yet implemented")
-    }
+    override fun clone() = NetworkResultCall(call.clone())
 
-    override fun request(): Request {
-        TODO("Not yet implemented")
-    }
+    override fun request() = call.request()
 
-    override fun timeout(): Timeout {
-        TODO("Not yet implemented")
-    }
+    override fun timeout() = call.timeout()
 }

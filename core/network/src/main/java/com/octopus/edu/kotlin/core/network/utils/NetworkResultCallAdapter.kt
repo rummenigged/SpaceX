@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.spacex.core.network.utils
+package com.octopus.edu.kotlin.core.network.utils
 
 import retrofit2.Call
 import retrofit2.CallAdapter

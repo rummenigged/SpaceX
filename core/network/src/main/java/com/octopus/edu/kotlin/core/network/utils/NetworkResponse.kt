@@ -1,9 +1,8 @@
-package com.octopus.edu.kotlin.spacex.core.network.utils
+package com.octopus.edu.kotlin.core.network.utils
 
-import com.octopus.edu.kotlin.spacex.core.model.ResponseOperation
-import com.octopus.edu.kotlin.spacex.core.model.ResponseOperation.Error
-import com.octopus.edu.kotlin.spacex.core.model.ResponseOperation.Success
-import com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse.ApiError
+import com.octopus.edu.kotlin.core.domain.common.ResponseOperation
+import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Error
+import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Success
 import okhttp3.ResponseBody
 import java.io.IOException
 
@@ -33,6 +32,10 @@ sealed class NetworkResponse<out T : Any> {
 fun <T : Any> NetworkResponse<T>.asOperation(): ResponseOperation<T> =
     when (this) {
         is NetworkResponse.Success -> Success(data)
-        is NetworkResponse.NetworkError -> Error(message = error.message ?: "", isNetworkError = true)
-        is ApiError -> Error(message = body?.string() ?: "Unknown Error", code = code ?: 0)
+        is NetworkResponse.NetworkError ->
+            Error(
+                message = error.message ?: "",
+                isNetworkError = true,
+            )
+        is NetworkResponse.ApiError -> Error(message = ResponseBody.toString(), code = code ?: 0)
     }

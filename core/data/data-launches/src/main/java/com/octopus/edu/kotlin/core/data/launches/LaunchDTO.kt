@@ -1,5 +1,7 @@
 package com.octopus.edu.kotlin.core.data.launches
 
+import com.octopus.edu.kotlin.core.domain.models.launch.Launch
+import com.octopus.edu.kotlin.core.domain.models.launch.LaunchStatus
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -56,10 +58,10 @@ fun LaunchDTO.toDomain(): Launch =
         missionName = name,
         flightNumber = flightNumber,
         date =
-            com.octopus.edu.kotlin.spacex.core.utils.DateTimeUtils
+            DateTimeUtils
                 .convertDate(
                     date,
-                    finalFormat = com.octopus.edu.kotlin.spacex.core.utils.DateTimeUtils.DateFormat.LONG_DATE_AND_TIME_US,
+                    finalFormat = DateTimeUtils.DateFormat.LONG_DATE_AND_TIME_US,
                 ).orEmpty(),
         rocketName = this.rocket.name.orEmpty(),
         launchStatus =

@@ -1,11 +1,15 @@
 package com.octopus.edu.kotlin.core.data.launches
 
-interface LaunchesApi {
-    @retrofit2.http.GET("launches")
-    suspend fun getLaunches(): com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse<List<LaunchDTO>>
+import com.octopus.edu.kotlin.core.network.utils.NetworkResponse
+import retrofit2.http.GET
+import retrofit2.http.Path
 
-    @retrofit2.http.GET("launches/{flight_number}")
+interface LaunchesApi {
+    @GET("launches")
+    suspend fun getLaunches(): NetworkResponse<List<LaunchDTO>>
+
+    @GET("launches/{flight_number}")
     suspend fun getLaunchDetails(
-        @retrofit2.http.Path("flight_number") flightNumber: Int,
-    ): com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse<LaunchDTO>
+        @Path("flight_number") flightNumber: Int,
+    ): NetworkResponse<LaunchDTO>
 }

@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.spacex.core.utils
+package com.octopus.edu.kotlin.core.data.launches
 
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -21,7 +21,9 @@ object DateTimeUtils {
             }
         }.getOrNull()
 
-    enum class DateFormat(val format: String) {
+    enum class DateFormat(
+        val format: String,
+    ) {
         ISO_8601("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),
         DATE_AND_TIME_US("MM/dd/yyyy hh:mm:ss"),
         DATE_AND_TIME_EU("dd/MM/yyyy hh:mm:ss"),

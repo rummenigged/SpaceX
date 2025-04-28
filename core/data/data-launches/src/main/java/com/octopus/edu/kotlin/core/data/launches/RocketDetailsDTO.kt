@@ -1,21 +1,23 @@
 package com.octopus.edu.kotlin.core.data.launches
 
-import com.octopus.edu.kotlin.spacex.core.model.Rocket
+import com.octopus.edu.kotlin.core.domain.models.rocket.Rocket
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-@com.squareup.moshi.JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true)
 data class RocketDetailsDTO(
-    @com.squareup.moshi.Json(name = "rocket_id")
+    @Json(name = "rocket_id")
     val id: String,
-    @com.squareup.moshi.Json(name = "rocket_name")
+    @Json(name = "rocket_name")
     val name: String,
-    @com.squareup.moshi.Json(name = "active")
+    @Json(name = "active")
     val isActive: Boolean,
-    @com.squareup.moshi.Json(name = "flickr_images")
+    @Json(name = "flickr_images")
     val images: List<String>,
 )
 
-fun RocketDetailsDTO.toDomain(): com.octopus.edu.kotlin.spacex.core.model.Rocket =
-    com.octopus.edu.kotlin.spacex.core.model.Rocket(
+fun RocketDetailsDTO.toDomain(): Rocket =
+    Rocket(
         id = id,
         name = name,
         isActive = isActive,

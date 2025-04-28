@@ -1,19 +1,22 @@
 package com.octopus.edu.kotlin.core.data.launches
 
-import com.octopus.edu.kotlin.spacex.core.model.LaunchDetails
-import com.octopus.edu.kotlin.spacex.core.model.LaunchStatus
-import com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse
-import com.octopus.edu.kotlin.spacex.core.network.utils.asOperation
+import com.octopus.edu.kotlin.core.domain.common.ResponseOperation
+import com.octopus.edu.kotlin.core.domain.models.launch.Launch
+import com.octopus.edu.kotlin.core.domain.models.launch.LaunchDetails
+import com.octopus.edu.kotlin.core.domain.models.launch.LaunchStatus
+import com.octopus.edu.kotlin.core.network.utils.NetworkResponse
+import com.octopus.edu.kotlin.core.network.utils.asOperation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class LaunchRepositoryImpl
-    @javax.inject.Inject
+    @Inject
     constructor(
         private val launchApi: LaunchesApi,
         private val rocketApi: RocketApi,
     ) : LaunchRepository {
-        override suspend fun getAllLaunches(): com.octopus.edu.kotlin.spacex.core.model.ResponseOperation<List<com.octopus.edu.kotlin.spacex.core.model.Launch>> =
+        override suspend fun getAllLaunches(): ResponseOperation<List<Launch>> =
             withContext(
                 Dispatchers.IO,
             ) {
@@ -23,49 +26,47 @@ class LaunchRepositoryImpl
                     .asOperation()
             }
 
-        override suspend fun getLaunchDetails(
-            flightNumber: Int,
-        ): com.octopus.edu.kotlin.spacex.core.model.ResponseOperation<com.octopus.edu.kotlin.spacex.core.model.LaunchDetails> =
+        override suspend fun getLaunchDetails(flightNumber: Int): ResponseOperation<LaunchDetails> =
             withContext(Dispatchers.IO) {
                 when (val launchDetailsResult = launchApi.getLaunchDetails(flightNumber)) {
-                    is com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse.Success -> {
+                    is NetworkResponse.Success -> {
                         val launch = launchDetailsResult.data
                         when (
                             val rocketDetailsResult =
-                                rocketApi.getRocketDetails(LaunchDTO.RocketDTO.id ?: "")
+                                rocketApi.getRocketDetails(launch.rocket.id ?: "")
                         ) {
-                            is com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse.Success -> {
+                            is NetworkResponse.Success -> {
                                 val rocket = rocketDetailsResult.data
                                 val result =
-                                    com.octopus.edu.kotlin.spacex.core.model.LaunchDetails(
-                                        missionName = LaunchDTO.name,
-                                        flightNumber = LaunchDTO.flightNumber,
-                                        date = LaunchDTO.date,
-                                        siteName = LaunchDTO.Site.longName.orEmpty(),
+                                    LaunchDetails(
+                                        missionName = launch.name,
+                                        flightNumber = launch.flightNumber,
+                                        date = launch.date,
+                                        siteName = launch.site?.longName.orEmpty(),
                                         rocket = rocket.toDomain(),
-                                        if (LaunchDTO.isLaunchSuccess == true) {
-                                            com.octopus.edu.kotlin.spacex.core.model.LaunchStatus.Success
+                                        if (launch.isLaunchSuccess == true) {
+                                            LaunchStatus.Success
                                         } else {
-                                            com.octopus.edu.kotlin.spacex.core.model.LaunchStatus.Failure(
-                                                LaunchDTO.LaunchFailureDetails.reason.orEmpty(),
+                                            LaunchStatus.Failure(
+                                                launch.launchFailureDetails?.reason.orEmpty(),
                                             )
                                         },
-                                        patch = LaunchDTO.Links.patch,
+                                        patch = launch.links.patch,
                                     )
-                                com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse
+                                NetworkResponse
                                     .Success(
                                         result,
                                     ).asOperation()
                             }
 
-                            is com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse.ApiError,
-                            is com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse.NetworkError,
+                            is NetworkResponse.ApiError,
+                            is NetworkResponse.NetworkError,
                             -> rocketDetailsResult.asOperation()
                         }
                     }
 
-                    is com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse.ApiError,
-                    is com.octopus.edu.kotlin.spacex.core.network.utils.NetworkResponse.NetworkError,
+                    is NetworkResponse.ApiError,
+                    is NetworkResponse.NetworkError,
                     -> launchDetailsResult.asOperation()
                 }
             }

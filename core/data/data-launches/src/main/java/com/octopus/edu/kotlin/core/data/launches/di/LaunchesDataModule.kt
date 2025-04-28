@@ -3,17 +3,22 @@ package com.octopus.edu.kotlin.core.data.launches.di
 import com.octopus.edu.kotlin.core.data.launches.LaunchRepository
 import com.octopus.edu.kotlin.core.data.launches.LaunchRepositoryImpl
 import com.octopus.edu.kotlin.core.data.launches.LaunchesApi
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-@dagger.Module
-@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@Module
+@InstallIn(SingletonComponent::class)
 abstract class LaunchesDataModule {
-    @dagger.Binds
+    @Binds
     abstract fun launchesRepository(repository: LaunchRepositoryImpl): LaunchRepository
 
     companion object {
-        @dagger.Provides
-        @javax.inject.Singleton
+        @Provides
+        @Singleton
         fun launchesApi(retrofit: retrofit2.Retrofit): LaunchesApi = retrofit.create(LaunchesApi::class.java)
     }
 }

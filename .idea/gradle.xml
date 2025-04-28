@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/core/design" />
             <option value="$PROJECT_DIR$/core/domain" />
             <option value="$PROJECT_DIR$/core/domain/models" />
+            <option value="$PROJECT_DIR$/core/domain/repository" />
             <option value="$PROJECT_DIR$/core/network" />
           </set>
         </option>

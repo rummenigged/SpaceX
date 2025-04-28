@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
 }
 
 android {
@@ -38,21 +37,6 @@ android {
 dependencies {
 
     implementation(project(":core:domain:models"))
-    implementation(project(":core:domain:repository"))
-    implementation(project(":core:network"))
 
     implementation(libs.androidx.core.ktx)
-
-//    Network
-    implementation(libs.retrofit)
-    implementation(libs.moshi.kotlin)
-
-//    Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-
-//    Test
-    testImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.androidx.junit)
-    androidTestImplementation(libs.test.androidx.espresso.core)
 }

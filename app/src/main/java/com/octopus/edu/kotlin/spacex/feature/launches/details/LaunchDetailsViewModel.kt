@@ -2,9 +2,9 @@ package com.octopus.edu.kotlin.spacex.feature.launches.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.octopus.edu.kotlin.core.data.launches.LaunchRepository
 import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Error
 import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Success
+import com.octopus.edu.kotlin.core.domain.repository.LaunchRepository
 import com.octopus.edu.kotlin.spacex.feature.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

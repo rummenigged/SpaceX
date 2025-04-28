@@ -78,6 +78,7 @@ dependencies {
 //    Modules
     implementation(project(":core:design"))
     implementation(project(":core:domain:models"))
+    implementation(project(":core:domain:repository"))
     implementation(project(":core:data:data-launches"))
 
     implementation(libs.androidx.core.ktx)

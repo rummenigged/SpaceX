@@ -7,7 +7,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import com.octopus.edu.kotlin.design.designSystem.theme.SpaceXTheme
+import com.octopus.edu.kotlin.core.design.designSystem.theme.SpaceXTheme
 import com.octopus.edu.kotlin.spacex.core.ui.SpaceXNavigation
 import com.octopus.edu.kotlin.spacex.core.ui.common.LocalNavigation
 

@@ -1,6 +1,6 @@
 package com.octopus.edu.kotlin.spacex.feature.launches.details
 
-import com.octopus.edu.kotlin.spacex.core.model.LaunchDetails
+import com.octopus.edu.kotlin.core.domain.models.launch.LaunchDetails
 import com.octopus.edu.kotlin.spacex.feature.common.ViewEffect
 import com.octopus.edu.kotlin.spacex.feature.common.ViewEvent
 import com.octopus.edu.kotlin.spacex.feature.common.ViewState
@@ -15,5 +15,7 @@ sealed class UiEvent : ViewEvent {
 }
 
 sealed class UiEffect : ViewEffect {
-    data class ShowError(val message: String) : UiEffect()
+    data class ShowError(
+        val message: String,
+    ) : UiEffect()
 }

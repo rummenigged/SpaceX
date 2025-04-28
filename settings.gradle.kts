@@ -22,3 +22,5 @@ rootProject.name = "SpaceX"
 include(":app")
 include(":core:design")
 include(":core:data:data-launches")
+include(":core:domain:models")
+include(":core:network")

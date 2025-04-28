@@ -20,3 +20,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SpaceX"
 include(":app")
+include(":core:design")

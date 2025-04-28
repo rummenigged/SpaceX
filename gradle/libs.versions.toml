@@ -6,8 +6,8 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.1"
 composeBom = "2025.04.01"
+composeFoundation = "1.8.0"
 retrofit = "2.11.0"
 moshi = "1.15.2"
 moshiConverter = "2.11.0"
@@ -25,12 +25,13 @@ googleService = "4.4.2"
 firebaseBom = "33.13.0"
 firebaseCrashlyticsGradleVersion = "3.0.3"
 googleFirebaseAppdistribution = "5.1.1"
+appcompat = "1.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "composeFoundation" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -69,6 +70,7 @@ test-androidx-espresso-core = { group = "androidx.test.espresso", name = "espres
 test-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 test-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 test-konsist = { group = "com.lemonappdev", name = "konsist", version.ref = "konsist"}
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 
 [plugins]
@@ -81,4 +83,5 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 googleService = { id = "com.google.gms.google-services", version.ref = "googleService" }
 google-firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "googleFirebaseAppdistribution" }
 firebase-crashlyticsGradlePlugin = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsGradleVersion" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 

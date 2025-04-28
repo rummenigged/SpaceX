@@ -11,13 +11,13 @@ plugins {
 }
 
 android {
-    namespace = "com.octopus.edu.kotlin.spacex"
-    compileSdk = 35
+    namespace = rootProject.ext["applicationId"].toString()
+    compileSdk = rootProject.ext["compileSdkVersion"].toString().toInt()
 
     defaultConfig {
-        applicationId = "com.octopus.edu.kotlin.spacex"
-        minSdk = 28
-        targetSdk = 35
+        applicationId = rootProject.ext["applicationId"].toString()
+        minSdk = rootProject.ext["minSdkVersion"].toString().toInt()
+        targetSdk = rootProject.ext["targetSdkVersion"].toString().toInt()
         versionCode = 2
         versionName = "0.2.1"
 
@@ -42,12 +42,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = rootProject.ext["sourceCompatibility"] as JavaVersion
+        targetCompatibility = rootProject.ext["targetCompatibility"] as JavaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = rootProject.ext["kotlinOptionsJVMTarget"].toString()
     }
 
     buildFeatures {
@@ -77,14 +77,15 @@ tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> {
 
 dependencies {
 
+//    Modules
+    implementation(project(":core:design"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     implementation(libs.material)
     implementation(libs.androidx.navigation.fragment.ktx)
 

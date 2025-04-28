@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.spacex.design
+package com.octopus.edu.kotlin.design.designSystem.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 fun FullScreenCircularProgressIndicator(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         CircularProgressIndicator(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = Modifier.align(Alignment.Companion.Center),
         )
     }
 }

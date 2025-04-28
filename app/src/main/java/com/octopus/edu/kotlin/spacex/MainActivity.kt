@@ -20,18 +20,6 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        enableEdgeToEdge()
-//        setContent {
-//            SpaceXTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = "Android",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
-//            }
-//        }
     }
 
     override fun navigate(destination: SpaceXDestination) {
@@ -44,19 +32,3 @@ class MainActivity :
         }
     }
 }
-//
-// @Composable
-// fun Greeting(name: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = "Hello $name!",
-//        modifier = modifier
-//    )
-// }
-//
-// @Preview(showBackground = true)
-// @Composable
-// fun GreetingPreview() {
-//    SpaceXTheme {
-//        Greeting("Android")
-//    }
-// }

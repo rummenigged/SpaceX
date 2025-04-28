@@ -21,6 +21,7 @@ object DateTimeUtils {
             }
         }.getOrNull()
 
+    @Suppress("unused")
     enum class DateFormat(
         val format: String,
     ) {

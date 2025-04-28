@@ -3,7 +3,6 @@ package com.octopus.edu.kotlin.core.network.utils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.net.UnknownHostException
 
 class NetworkResultCall<T : Any>(
     private val call: Call<T>,
@@ -61,12 +60,6 @@ class NetworkResultCall<T : Any>(
                     call: Call<T?>,
                     throwable: Throwable,
                 ) {
-                    val error =
-                        when (throwable) {
-                            is UnknownHostException -> NetworkResponse.NetworkError(throwable)
-                            else -> NetworkResponse.ApiError(body = null, throwable = throwable)
-                        }
-
                     callback.onFailure(this@NetworkResultCall, throwable)
                 }
             },

@@ -1,9 +1,9 @@
-package com.octopus.edu.kotlin.spacex.feature.launches.details
+package com.octopus.edu.kotlin.feature.launch.details
 
 import com.octopus.edu.kotlin.core.domain.models.launch.LaunchDetails
-import com.octopus.edu.kotlin.spacex.feature.common.ViewEffect
-import com.octopus.edu.kotlin.spacex.feature.common.ViewEvent
-import com.octopus.edu.kotlin.spacex.feature.common.ViewState
+import com.octopus.edu.kotlin.core.ui.common.ViewEffect
+import com.octopus.edu.kotlin.core.ui.common.ViewEvent
+import com.octopus.edu.kotlin.core.ui.common.ViewState
 
 data class UiState(
     val details: LaunchDetails? = null,

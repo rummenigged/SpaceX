@@ -1,11 +1,11 @@
-package com.octopus.edu.kotlin.spacex.feature.launches.details
+package com.octopus.edu.kotlin.feature.launch.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Error
 import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Success
 import com.octopus.edu.kotlin.core.domain.repository.LaunchRepository
-import com.octopus.edu.kotlin.spacex.feature.common.BaseViewModel
+import com.octopus.edu.kotlin.core.ui.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,20 +32,21 @@ class LaunchDetailsViewModel
 
         private fun getLaunchDetails() =
             viewModelScope.launch {
-                getSavedStateValue<Int>("flightNumber")?.let { flightNumber ->
-                    when (
-                        val value =
-                            repository.getLaunchDetails(
-                                flightNumber,
-                            )
-                    ) {
-                        is Error -> {}
-                        is Success -> {
-                            setState {
-                                copy(details = value.data, isLoading = false)
+                getSavedStateValue<Int>("flightNumber")
+                    ?.let { flightNumber ->
+                        when (
+                            val value =
+                                repository.getLaunchDetails(
+                                    flightNumber,
+                                )
+                        ) {
+                            is Error -> {}
+                            is Success -> {
+                                setState {
+                                    copy(details = value.data, isLoading = false)
+                                }
                             }
                         }
                     }
-                }
             }
     }

@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.spacex.feature.launches.details
+package com.octopus.edu.kotlin.feature.launch.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,8 +26,7 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.octopus.edu.kotlin.core.design.designSystem.components.FullScreenCircularProgressIndicator
 import com.octopus.edu.kotlin.core.design.designSystem.components.SpaceXTopBar
-import com.octopus.edu.kotlin.spacex.R
-import com.octopus.edu.kotlin.spacex.feature.common.LaunchedUiEffectHandler
+import com.octopus.edu.kotlin.core.ui.common.LaunchedUiEffectHandler
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -90,7 +89,11 @@ fun LaunchDetailsScreen(
             )
 
             uiState.details?.rocket?.name?.let { rocketName ->
-                Spacer(Modifier.height(8.dp))
+                Spacer(
+                    Modifier.height(
+                        8.dp,
+                    ),
+                )
 
                 Text(
                     text = "Rocket Name: $rocketName",
@@ -98,7 +101,11 @@ fun LaunchDetailsScreen(
             }
 
             uiState.details?.missionName?.let { missionName ->
-                Spacer(Modifier.height(8.dp))
+                Spacer(
+                    Modifier.height(
+                        8.dp,
+                    ),
+                )
 
                 Text(
                     text = "Mission Name: $missionName",
@@ -106,7 +113,11 @@ fun LaunchDetailsScreen(
             }
 
             uiState.details?.siteName?.let { siteName ->
-                Spacer(Modifier.height(8.dp))
+                Spacer(
+                    Modifier.height(
+                        8.dp,
+                    ),
+                )
 
                 Text(
                     text = "Site Name: $siteName",

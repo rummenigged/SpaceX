@@ -36,6 +36,7 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, Effect : Vi
 
     fun <T> getSavedStateValue(key: String): T? = savedState[key]
 
+    @SuppressWarnings("unused")
     fun <T> saveStateValue(
         key: String,
         value: T,

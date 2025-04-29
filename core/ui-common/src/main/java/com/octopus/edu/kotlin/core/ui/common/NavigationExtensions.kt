@@ -15,6 +15,7 @@ fun NavController.safelyNavigate(direction: NavDirections) =
         Log.e(e::class.toString(), e.message.orEmpty())
     }
 
+@SuppressWarnings("unused")
 fun Fragment.safelyNavigate(
     direction: NavDirections,
     @IdRes host: Int? = null,

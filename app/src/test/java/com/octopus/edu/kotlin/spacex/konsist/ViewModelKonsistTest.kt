@@ -6,7 +6,7 @@ import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.ext.list.withParentOf
 import com.lemonappdev.konsist.api.ext.list.withoutName
 import com.lemonappdev.konsist.api.verify.assertTrue
-import com.octopus.edu.kotlin.spacex.feature.common.BaseViewModel
+import com.octopus.edu.kotlin.core.ui.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.junit.Test
 import javax.inject.Inject

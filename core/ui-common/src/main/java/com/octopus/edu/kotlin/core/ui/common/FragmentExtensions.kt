@@ -1,15 +1,13 @@
-package com.octopus.edu.kotlin.spacex.feature.common
+package com.octopus.edu.kotlin.core.ui.common
 
 import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.platform.ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
 import androidx.fragment.app.Fragment
 import com.octopus.edu.kotlin.core.design.designSystem.theme.SpaceXTheme
-import com.octopus.edu.kotlin.spacex.core.ui.SpaceXNavigation
-import com.octopus.edu.kotlin.spacex.core.ui.common.LocalNavigation
 
 @Composable
 fun Fragment.SpaceXThemeWithCompositionsLocals(
@@ -28,7 +26,7 @@ fun Fragment.SpaceXThemeWithCompositionsLocals(
 
 fun Fragment.setComposableContent(content: @Composable (View) -> Unit) =
     ComposeView(requireContext()).apply {
-        setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
         setContent {
             SpaceXThemeWithCompositionsLocals {
                 content(this)

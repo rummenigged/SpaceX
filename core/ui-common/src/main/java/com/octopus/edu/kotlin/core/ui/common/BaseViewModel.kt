@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.spacex.feature.common
+package com.octopus.edu.kotlin.core.ui.common
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

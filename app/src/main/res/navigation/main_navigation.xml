@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/launchesFragment"
-        android:name="com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesFragment"
+        android:name="com.octopus.edu.kotlin.feature.launches.LaunchesFragment"
         android:label="LaunchesFragment" >
         <action
             android:id="@+id/toLaunchDetails"

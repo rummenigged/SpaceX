@@ -1,14 +1,11 @@
-package com.octopus.edu.kotlin.spacex.feature.launches.list
+package com.octopus.edu.kotlin.feature.launches
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Error
 import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Success
 import com.octopus.edu.kotlin.core.domain.repository.LaunchRepository
-import com.octopus.edu.kotlin.spacex.feature.common.BaseViewModel
-import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.UiEffect
-import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.UiEvent
-import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.UiState
+import com.octopus.edu.kotlin.core.ui.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,7 +16,9 @@ class LaunchesViewModel
     constructor(
         private val launchRepository: LaunchRepository,
         savedState: SavedStateHandle,
-    ) : BaseViewModel<UiEvent, UiState, UiEffect>(savedState) {
+    ) : BaseViewModel<LaunchesUiContract.UiEvent, LaunchesUiContract.UiState, LaunchesUiContract.UiEffect>(
+            savedState,
+        ) {
         init {
             getAllLaunches()
         }
@@ -31,26 +30,31 @@ class LaunchesViewModel
                         launchRepository.getAllLaunches()
                 ) {
                     is Success -> {
-                        setState { copy(launches = result.data, isLoading = false) }
+                        setState {
+                            copy(
+                                launches = result.data,
+                                isLoading = false,
+                            )
+                        }
                     }
 
                     is Error -> {
-                        setEffect(UiEffect.ShowError(result.message.toString()))
+                        setEffect(LaunchesUiContract.UiEffect.ShowError(result.message.toString()))
                     }
                 }
             }
 
-        override fun getInitialValue(): UiState = UiState()
+        override fun getInitialValue(): LaunchesUiContract.UiState = LaunchesUiContract.UiState()
 
-        override fun processEvent(event: UiEvent) =
+        override fun processEvent(event: LaunchesUiContract.UiEvent) =
             when (event) {
-                is UiEvent.OnLaunchClicked -> {
+                is LaunchesUiContract.UiEvent.OnLaunchClicked -> {
                     onLaunchClicked(event.flightNumber)
                 }
-                UiEvent.MarkEffectAsConsumed -> markEffectAsConsumed()
+                LaunchesUiContract.UiEvent.MarkEffectAsConsumed -> markEffectAsConsumed()
             }
 
         private fun onLaunchClicked(flightNumber: Int) {
-            setEffect(UiEffect.NavigateToLaunchDetails(flightNumber))
+            setEffect(LaunchesUiContract.UiEffect.NavigateToLaunchDetails(flightNumber))
         }
     }

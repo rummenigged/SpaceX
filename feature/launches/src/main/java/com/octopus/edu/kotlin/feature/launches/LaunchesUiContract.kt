@@ -1,16 +1,17 @@
-package com.octopus.edu.kotlin.spacex.feature.launches.list
+package com.octopus.edu.kotlin.feature.launches
 
 import com.octopus.edu.kotlin.core.domain.models.launch.Launch
 import com.octopus.edu.kotlin.core.domain.models.launch.LaunchStatus
 import com.octopus.edu.kotlin.core.domain.models.launch.LaunchStatus.Failure
 import com.octopus.edu.kotlin.core.domain.models.launch.LaunchStatus.Success
-import com.octopus.edu.kotlin.spacex.feature.common.ViewEffect
-import com.octopus.edu.kotlin.spacex.feature.common.ViewEvent
-import com.octopus.edu.kotlin.spacex.feature.common.ViewState
+import com.octopus.edu.kotlin.core.ui.common.ViewEffect
+import com.octopus.edu.kotlin.core.ui.common.ViewEvent
+import com.octopus.edu.kotlin.core.ui.common.ViewState
 
 object LaunchesUiContract {
     data class UiState(
-        val launches: List<Launch> = listOf<Launch>(),
+        val launches: List<Launch> =
+            listOf<Launch>(),
         val isLoading: Boolean = true,
     ) : ViewState
 

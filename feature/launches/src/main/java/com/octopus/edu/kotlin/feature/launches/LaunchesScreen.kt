@@ -1,14 +1,11 @@
-package com.octopus.edu.kotlin.spacex.feature.launches.list
+package com.octopus.edu.kotlin.feature.launches
 
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -17,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
@@ -44,12 +40,11 @@ import com.octopus.edu.kotlin.core.design.designSystem.theme.SpaceXTheme
 import com.octopus.edu.kotlin.core.design.designSystem.theme.Typography
 import com.octopus.edu.kotlin.core.domain.models.launch.Launch
 import com.octopus.edu.kotlin.core.domain.models.launch.mock
-import com.octopus.edu.kotlin.spacex.R
-import com.octopus.edu.kotlin.spacex.core.ui.SpaceXDestination
-import com.octopus.edu.kotlin.spacex.core.ui.SpaceXNavigation
-import com.octopus.edu.kotlin.spacex.core.ui.common.LocalNavigation
-import com.octopus.edu.kotlin.spacex.feature.common.LaunchedUiEffectHandler
-import com.octopus.edu.kotlin.spacex.feature.launches.list.LaunchesUiContract.getStatusValue
+import com.octopus.edu.kotlin.core.ui.common.LaunchedUiEffectHandler
+import com.octopus.edu.kotlin.core.ui.common.LocalNavigation
+import com.octopus.edu.kotlin.core.ui.common.SpaceXDestination.LaunchDetails
+import com.octopus.edu.kotlin.core.ui.common.SpaceXNavigation
+import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.getStatusValue
 import kotlinx.coroutines.flow.StateFlow
 import okhttp3.internal.toImmutableList
 
@@ -65,7 +60,9 @@ internal fun LaunchesScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            SpaceXTopBar(title = R.string.launch_list_title)
+            SpaceXTopBar(
+                title = R.string.launch_list_title,
+            )
         },
     ) { padding ->
         LaunchesScreenContent(
@@ -100,7 +97,11 @@ fun EffectHandler(
                 }
 
                 is LaunchesUiContract.UiEffect.NavigateToLaunchDetails ->
-                    navigation.navigate(SpaceXDestination.LaunchDetails(effect.flightNumber))
+                    navigation.navigate(
+                        LaunchDetails(
+                            effect.flightNumber,
+                        ),
+                    )
             }
         },
     )
@@ -116,9 +117,16 @@ internal fun LaunchesScreenContent(
         FullScreenCircularProgressIndicator()
     } else {
         LazyColumn(
-            modifier = modifier.fillMaxSize().background(colorScheme.background),
-            contentPadding = PaddingValues(all = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .background(colorScheme.background),
+            contentPadding =
+                androidx.compose.foundation.layout
+                    .PaddingValues(all = 16.dp),
+            verticalArrangement =
+                androidx.compose.foundation.layout.Arrangement
+                    .spacedBy(8.dp),
         ) {
             items(uiState.launches) { item ->
                 LaunchItem(
@@ -138,12 +146,22 @@ internal fun LaunchItem(
     onItemClicked: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier.clickable { onItemClicked(item.flightNumber) }) {
+    androidx.compose.foundation.layout.Row(modifier = modifier.clickable { onItemClicked(item.flightNumber) }) {
         LaunchPatch(patch = item.patch)
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(
+            modifier =
+                Modifier.width(
+                    8.dp,
+                ),
+        )
 
-        Column(modifier = Modifier.weight(1f)) {
+        Column(
+            modifier =
+                Modifier.weight(
+                    1f,
+                ),
+        ) {
             Text(
                 text = "${item.missionName} - ${item.rocketName}",
                 style = Typography.bodyMedium,
@@ -151,7 +169,12 @@ internal fun LaunchItem(
                 overflow = TextOverflow.Ellipsis,
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(
+                modifier =
+                    Modifier.height(
+                        8.dp,
+                    ),
+            )
 
             Text(
                 text = item.date,
@@ -159,7 +182,12 @@ internal fun LaunchItem(
             )
         }
 
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(
+            modifier =
+                Modifier.width(
+                    4.dp,
+                ),
+        )
         Text(
             text = item.launchStatus.getStatusValue(),
             style = Typography.labelSmall,
@@ -188,16 +216,20 @@ fun LaunchPatch(
                     .data(patch)
                     .decoderFactory(SvgDecoder.Factory())
                     .build(),
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.Companion.Fit,
             modifier =
                 modifier
                     .size(62.dp)
                     .border(
                         width = 2.dp,
                         color = colorScheme.onSurfaceVariant,
-                        shape = RoundedCornerShape(8.dp),
-                    ).clip(RoundedCornerShape(8.dp))
-                    .background(colorScheme.onSurface),
+                        shape =
+                            androidx.compose.foundation.shape
+                                .RoundedCornerShape(8.dp),
+                    ).clip(
+                        androidx.compose.foundation.shape
+                            .RoundedCornerShape(8.dp),
+                    ).background(colorScheme.onSurface),
             contentDescription = null,
         )
     }
@@ -206,7 +238,11 @@ fun LaunchPatch(
 @PreviewLightDark
 @Composable
 private fun LeagueItemPreview() {
-    LaunchItem(item = Launch.mock(), onItemClicked = {})
+    LaunchItem(
+        item =
+            Launch.Companion.mock(),
+        onItemClicked = {},
+    )
 }
 
 @PreviewLightDark
@@ -218,10 +254,14 @@ private fun LeaguesScreenPreview() {
                 uiState =
                     LaunchesUiContract.UiState(
                         isLoading = false,
-                        launches = listOf(Launch.mock()).toImmutableList(),
+                        launches =
+                            listOf(
+                                Launch.Companion.mock(),
+                            ).toImmutableList(),
                     ),
                 onEvent = {},
-                modifier = Modifier.padding(padding),
+                modifier =
+                    Modifier.padding(padding),
             )
         }
     }

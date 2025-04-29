@@ -2,10 +2,11 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    namespace = "com.adgem.cosmicrewards.core.design"
+    namespace = "com.octopus.edu.kotlin.core.ui.common"
     compileSdk = rootProject.ext["compileSdkVersion"].toString().toInt()
 
     defaultConfig {
@@ -41,12 +42,15 @@ android {
 
 dependencies {
 
+    implementation(project(":core:design"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.navigation.fragment.ktx)
 
 //    Compose
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)
-    api(libs.androidx.compose.material)
 }

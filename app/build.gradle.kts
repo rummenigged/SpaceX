@@ -77,16 +77,19 @@ dependencies {
 
 //    Modules
     implementation(project(":core:design"))
+    implementation(project(":core:ui-common"))
     implementation(project(":core:domain:models"))
     implementation(project(":core:domain:repository"))
     implementation(project(":core:data:data-launches"))
+    implementation(project(":feature:launches"))
+    implementation(project(":feature:launchDetails"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.material)
     implementation(libs.androidx.navigation.fragment.ktx)
 
@@ -110,6 +113,6 @@ dependencies {
     androidTestImplementation(libs.test.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.test.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.test.androidx.ui.test.manifest)
 }

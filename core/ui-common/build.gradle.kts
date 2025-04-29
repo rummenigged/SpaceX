@@ -49,6 +49,6 @@ dependencies {
 
 //    Compose
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
+    implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)
 }

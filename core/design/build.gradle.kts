@@ -48,5 +48,5 @@ dependencies {
 //    Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.foundation)
-    api(libs.androidx.material3)
+    api(libs.androidx.compose.material)
 }

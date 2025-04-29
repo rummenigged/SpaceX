@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.octopus.edu.kotlin.core.ui.common.SpaceXDestination
 import com.octopus.edu.kotlin.core.ui.common.SpaceXNavigation
+import com.octopus.edu.kotlin.core.ui.common.safelyNavigate
 import com.octopus.edu.kotlin.feature.launches.LaunchesFragmentDirections.Companion.toLaunchDetails
 import com.octopus.edu.kotlin.spacex.databinding.MainActivityBinding
-import com.octopus.edu.kotlin.spacex.utils.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

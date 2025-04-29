@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.spacex.utils
+package com.octopus.edu.kotlin.core.ui.common
 
 import android.util.Log
 import androidx.annotation.IdRes

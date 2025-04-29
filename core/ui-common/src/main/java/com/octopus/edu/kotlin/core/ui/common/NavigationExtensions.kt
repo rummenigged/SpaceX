@@ -1,6 +1,5 @@
 package com.octopus.edu.kotlin.core.ui.common
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
@@ -16,7 +15,7 @@ fun NavController.safelyNavigate(direction: NavDirections) =
         Log.e(e::class.toString(), e.message.orEmpty())
     }
 
-@SuppressLint("unused")
+@Suppress("unused")
 fun Fragment.safelyNavigate(
     direction: NavDirections,
     @IdRes host: Int? = null,

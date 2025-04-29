@@ -1,5 +1,6 @@
 package com.octopus.edu.kotlin.core.ui.common
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +37,7 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, Effect : Vi
 
     fun <T> getSavedStateValue(key: String): T? = savedState[key]
 
-    @SuppressWarnings("unused")
+    @SuppressLint("unused")
     fun <T> saveStateValue(
         key: String,
         value: T,

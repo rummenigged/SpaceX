@@ -29,9 +29,9 @@ buildscript {
         set("targetSdkVersion", 35)
         set("minSdkVersion", 28)
 
-        set("sourceCompatibility", JavaVersion.VERSION_11)
-        set("targetCompatibility", JavaVersion.VERSION_11)
-        set("kotlinOptionsJVMTarget", "11")
+        set("sourceCompatibility", JavaVersion.VERSION_17)
+        set("targetCompatibility", JavaVersion.VERSION_17)
+        set("kotlinOptionsJVMTarget", "17")
     }
 }
 

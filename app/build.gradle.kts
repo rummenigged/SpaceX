@@ -29,7 +29,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
 
@@ -81,6 +81,7 @@ dependencies {
     implementation(project(":core:domain:models"))
     implementation(project(":core:domain:repository"))
     implementation(project(":core:data:data-launches"))
+    testImplementation(project(":core:testing"))
     implementation(project(":feature:launches"))
     implementation(project(":feature:launchDetails"))
 
@@ -107,12 +108,8 @@ dependencies {
     implementation(libs.firebase.crashlyticsKtx)
     implementation(libs.firebase.analyticsKtx)
 
-    testImplementation(libs.test.konsist)
-    testImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.androidx.junit)
-    androidTestImplementation(libs.test.androidx.espresso.core)
+//    Testing
+    testImplementation(project(":core:testing"))
+    androidTestImplementation(project(":core:testing"))
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.test.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.test.androidx.ui.test.manifest)
 }

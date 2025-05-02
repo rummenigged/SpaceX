@@ -65,8 +65,8 @@ firebase-analyticsKtx = { group = "com.google.firebase", name = "firebase-analyt
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 test-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-test-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-test-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+test-androidx-compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+test-androidx-compose-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 test-konsist = { group = "com.lemonappdev", name = "konsist", version.ref = "konsist"}
 
 

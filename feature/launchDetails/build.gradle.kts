@@ -21,7 +21,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
@@ -46,6 +46,7 @@ dependencies {
     implementation(project(":core:domain:repository"))
     implementation(project(":core:ui-common"))
     implementation(project(":core:design"))
+    testImplementation(project(":core:testing"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -66,8 +67,4 @@ dependencies {
 //    Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
-
-    testImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.androidx.junit)
-    androidTestImplementation(libs.test.androidx.espresso.core)
 }

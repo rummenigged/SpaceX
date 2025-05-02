@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.core.network
+package com.octopus.edu.kotlin.core.testing
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.octopus.edu.kotlin.core.network.test", appContext.packageName)
+        assertEquals("com.octopus.edu.kotlin.core.testing.test", appContext.packageName)
     }
 }

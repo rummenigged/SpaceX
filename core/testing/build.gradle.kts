@@ -1,12 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "com.octopus.edu.kotlin.feature.launch.details"
+    namespace = "com.octopus.edu.kotlin.core.testing"
     compileSdk = rootProject.ext["compileSdkVersion"].toString().toInt()
 
     defaultConfig {
@@ -34,37 +33,16 @@ android {
     kotlinOptions {
         jvmTarget = rootProject.ext["kotlinOptionsJVMTarget"].toString()
     }
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
 
-    implementation(project(":core:domain:models"))
-    implementation(project(":core:domain:repository"))
-    implementation(project(":core:ui-common"))
-    implementation(project(":core:design"))
-    testImplementation(project(":core:testing"))
+    api(libs.test.konsist)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
-//    Compose
+    api(libs.test.junit)
+    api(libs.test.androidx.junit)
+    api(libs.test.androidx.espresso.core)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-
-//    Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
-
-//    Coil
-    implementation(libs.coil.compose)
-    implementation(libs.coil.svg)
+    api(libs.test.androidx.compose.ui.junit4)
+    debugApi(libs.test.androidx.compose.ui.manifest)
 }

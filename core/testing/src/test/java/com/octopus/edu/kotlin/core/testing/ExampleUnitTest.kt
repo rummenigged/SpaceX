@@ -1,4 +1,4 @@
-package com.octopus.edu.kotlin.core.network
+package com.octopus.edu.kotlin.core.testing
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

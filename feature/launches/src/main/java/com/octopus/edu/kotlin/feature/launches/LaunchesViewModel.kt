@@ -2,10 +2,15 @@ package com.octopus.edu.kotlin.feature.launches
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.octopus.edu.kotlin.core.domain.common.ResponseOperation
 import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Error
 import com.octopus.edu.kotlin.core.domain.common.ResponseOperation.Success
+import com.octopus.edu.kotlin.core.domain.models.launch.Launch
 import com.octopus.edu.kotlin.core.domain.repository.LaunchRepository
 import com.octopus.edu.kotlin.core.ui.common.BaseViewModel
+import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.Tab
+import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.Tab.Past
+import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.Tab.Upcoming
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,45 +21,72 @@ class LaunchesViewModel
     constructor(
         private val launchRepository: LaunchRepository,
         savedState: SavedStateHandle,
-    ) : BaseViewModel<LaunchesUiContract.UiEvent, LaunchesUiContract.UiState, LaunchesUiContract.UiEffect>(
-            savedState,
-        ) {
+    ) : BaseViewModel<
+            LaunchesUiContract.UiEvent,
+            LaunchesUiContract.UiState,
+            LaunchesUiContract.UiEffect,
+            >(savedState) {
         init {
-            getAllLaunches()
+            getLaunchesByGroup(getInitialValue().tabSelected)
         }
 
-        private fun getAllLaunches() =
+        private fun getLaunchesByGroup(tab: Tab) =
             viewModelScope.launch {
-                when (
-                    val result =
-                        launchRepository.getAllLaunches()
-                ) {
-                    is Success -> {
-                        setState {
-                            copy(
-                                launches = result.data,
-                                isLoading = false,
-                            )
-                        }
+                setState { copy(isLoading = true, tabSelected = tab) }
+
+                val result =
+                    when (tab) {
+                        is Past -> launchRepository.getPastLaunches()
+                        is Upcoming -> launchRepository.getUpcomingLaunches()
                     }
 
-                    is Error -> {
-                        setEffect(LaunchesUiContract.UiEffect.ShowError(result.message.toString()))
-                    }
-                }
+                updateLaunchList(result)
             }
 
-        override fun getInitialValue(): LaunchesUiContract.UiState = LaunchesUiContract.UiState()
+        private fun updateLaunchList(result: ResponseOperation<List<Launch>>) {
+            when (result) {
+                is Success -> {
+                    setState {
+                        copy(
+                            launches = result.data,
+                            isLoading = false,
+                        )
+                    }
+                }
 
-        override fun processEvent(event: LaunchesUiContract.UiEvent) =
+                is Error -> {
+                    setState { copy(isLoading = false) }
+                    setEffect(LaunchesUiContract.UiEffect.ShowError(result.message.toString()))
+                }
+            }
+        }
+
+        override fun getInitialValue(): LaunchesUiContract.UiState =
+            LaunchesUiContract.UiState(
+                isLoading = false,
+            )
+
+        override fun processEvent(event: LaunchesUiContract.UiEvent) {
             when (event) {
                 is LaunchesUiContract.UiEvent.OnLaunchClicked -> {
                     onLaunchClicked(event.flightNumber)
                 }
+
                 LaunchesUiContract.UiEvent.MarkEffectAsConsumed -> markEffectAsConsumed()
+
+                is LaunchesUiContract.UiEvent.OnTabSelected -> {
+                    getLaunchesByGroup(event.tab)
+                }
+
+                LaunchesUiContract.UiEvent.ReloadLaunches -> {
+                    getLaunchesByGroup(getInitialValue().tabSelected)
+                }
             }
+        }
 
         private fun onLaunchClicked(flightNumber: Int) {
             setEffect(LaunchesUiContract.UiEffect.NavigateToLaunchDetails(flightNumber))
         }
+
+        companion object
     }

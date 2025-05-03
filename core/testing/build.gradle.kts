@@ -39,8 +39,11 @@ dependencies {
 
     api(libs.test.konsist)
 
+    api(libs.test.mockk)
+    api(libs.test.turbine)
     api(libs.test.junit)
     api(libs.test.androidx.junit)
+    api(libs.test.androidx.rules)
     api(libs.test.androidx.espresso.core)
     implementation(platform(libs.androidx.compose.bom))
     api(libs.test.androidx.compose.ui.junit4)

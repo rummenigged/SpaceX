@@ -1,11 +1,11 @@
 package com.octopus.edu.kotlin.feature.launches
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -14,13 +14,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +42,7 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.octopus.edu.kotlin.core.design.designSystem.components.FullScreenCircularProgressIndicator
 import com.octopus.edu.kotlin.core.design.designSystem.components.SpaceXTopBar
+import com.octopus.edu.kotlin.core.design.designSystem.components.TabContainer
 import com.octopus.edu.kotlin.core.design.designSystem.theme.SpaceXTheme
 import com.octopus.edu.kotlin.core.design.designSystem.theme.Typography
 import com.octopus.edu.kotlin.core.domain.models.launch.Launch
@@ -44,6 +51,8 @@ import com.octopus.edu.kotlin.core.ui.common.LaunchedUiEffectHandler
 import com.octopus.edu.kotlin.core.ui.common.LocalNavigation
 import com.octopus.edu.kotlin.core.ui.common.SpaceXDestination.LaunchDetails
 import com.octopus.edu.kotlin.core.ui.common.SpaceXNavigation
+import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiEvent
+import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiState
 import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.getStatusValue
 import kotlinx.coroutines.flow.StateFlow
 import okhttp3.internal.toImmutableList
@@ -56,6 +65,7 @@ internal fun LaunchesScreen(
     viewModel: LaunchesViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.viewStateFlow.collectAsStateWithLifecycle()
+    val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         modifier = modifier,
@@ -64,8 +74,9 @@ internal fun LaunchesScreen(
                 title = R.string.launch_list_title,
             )
         },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
     ) { padding ->
-        LaunchesScreenContent(
+        LaunchesContent(
             modifier = modifier.padding(padding),
             uiState = viewState,
             onEvent = viewModel::processEvent,
@@ -73,6 +84,7 @@ internal fun LaunchesScreen(
 
         EffectHandler(
             effectFlow = viewModel.effect,
+            snackBarHostState = snackBarHostState,
             navigation = navigation,
             onEvent = viewModel::processEvent,
         )
@@ -83,17 +95,26 @@ internal fun LaunchesScreen(
 fun EffectHandler(
     navigation: SpaceXNavigation,
     effectFlow: StateFlow<LaunchesUiContract.UiEffect?>,
-    onEvent: (LaunchesUiContract.UiEvent) -> Unit,
+    onEvent: (UiEvent) -> Unit,
+    snackBarHostState: SnackbarHostState,
 ) {
     val currentOnEvent by rememberUpdatedState(onEvent)
     val context = LocalContext.current
     LaunchedUiEffectHandler(
         effectFlow = effectFlow,
-        onEffectConsumed = { currentOnEvent(LaunchesUiContract.UiEvent.MarkEffectAsConsumed) },
+        onEffectConsumed = { currentOnEvent(UiEvent.MarkEffectAsConsumed) },
         onEffect = { effect ->
             when (effect) {
                 is LaunchesUiContract.UiEffect.ShowError -> {
-                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                    val result =
+                        snackBarHostState.showSnackbar(
+                            message = effect.message,
+                            actionLabel = context.getString(R.string.retry),
+                        )
+
+                    if (result == SnackbarResult.ActionPerformed) {
+                        currentOnEvent(UiEvent.ReloadLaunches)
+                    }
                 }
 
                 is LaunchesUiContract.UiEffect.NavigateToLaunchDetails ->
@@ -108,34 +129,61 @@ fun EffectHandler(
 }
 
 @Composable
-internal fun LaunchesScreenContent(
-    uiState: LaunchesUiContract.UiState,
-    onEvent: (LaunchesUiContract.UiEvent) -> Unit,
+internal fun LaunchesContent(
+    uiState: UiState,
+    onEvent: (UiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (uiState.isLoading) {
-        FullScreenCircularProgressIndicator()
-    } else {
-        LazyColumn(
-            modifier =
-                modifier
-                    .fillMaxSize()
-                    .background(colorScheme.background),
-            contentPadding =
-                androidx.compose.foundation.layout
-                    .PaddingValues(all = 16.dp),
-            verticalArrangement =
-                androidx.compose.foundation.layout.Arrangement
-                    .spacedBy(8.dp),
-        ) {
-            items(uiState.launches) { item ->
-                LaunchItem(
-                    item = item,
-                    onItemClicked = { flightNumber ->
-                        onEvent(LaunchesUiContract.UiEvent.OnLaunchClicked(flightNumber))
-                    },
+    Column(modifier = modifier.fillMaxSize()) {
+        val selectedIndex = uiState.tabs.indexOfFirst { it == uiState.tabSelected }
+        val pagerState = rememberPagerState(initialPage = selectedIndex) { uiState.tabs.size }
+
+        TabContainer(
+            tabTitles = uiState.tabTitles,
+            state = pagerState,
+        ) { tabIndex ->
+
+            LaunchedEffect(tabIndex) {
+                onEvent(UiEvent.OnTabSelected(uiState.getTab(tabIndex)))
+            }
+
+            if (uiState.isLoading) {
+                FullScreenCircularProgressIndicator()
+            } else {
+                LaunchList(
+                    uiState,
+                    onEvent,
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun LaunchList(
+    uiState: UiState,
+    onEvent: (UiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(colorScheme.background),
+        contentPadding =
+            androidx.compose.foundation.layout
+                .PaddingValues(all = 16.dp),
+        verticalArrangement =
+            androidx.compose.foundation.layout.Arrangement
+                .spacedBy(8.dp),
+    ) {
+        items(uiState.launches) { item ->
+            LaunchItem(
+                item = item,
+                onItemClicked = { flightNumber ->
+                    onEvent(UiEvent.OnLaunchClicked(flightNumber))
+                },
+            )
         }
     }
 }
@@ -146,7 +194,12 @@ internal fun LaunchItem(
     onItemClicked: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    androidx.compose.foundation.layout.Row(modifier = modifier.clickable { onItemClicked(item.flightNumber) }) {
+    Row(
+        modifier =
+            modifier.clickable {
+                onItemClicked(item.flightNumber)
+            },
+    ) {
         LaunchPatch(patch = item.patch)
 
         Spacer(
@@ -250,9 +303,9 @@ private fun LeagueItemPreview() {
 private fun LeaguesScreenPreview() {
     SpaceXTheme {
         Scaffold { padding ->
-            LaunchesScreenContent(
+            LaunchesContent(
                 uiState =
-                    LaunchesUiContract.UiState(
+                    UiState(
                         isLoading = false,
                         launches =
                             listOf(

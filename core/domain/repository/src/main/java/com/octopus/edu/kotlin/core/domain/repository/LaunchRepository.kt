@@ -8,4 +8,8 @@ interface LaunchRepository {
     suspend fun getAllLaunches(): ResponseOperation<List<Launch>>
 
     suspend fun getLaunchDetails(flightNumber: Int): ResponseOperation<LaunchDetails>
+
+    suspend fun getPastLaunches(): ResponseOperation<List<Launch>>
+
+    suspend fun getUpcomingLaunches(): ResponseOperation<List<Launch>>
 }

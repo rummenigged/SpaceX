@@ -74,4 +74,24 @@ class LaunchRepositoryImpl
                     -> launchDetailsResult.asOperation()
                 }
             }
+
+        override suspend fun getPastLaunches(): ResponseOperation<List<Launch>> =
+            withContext(
+                Dispatchers.IO,
+            ) {
+                launchApi
+                    .getLaunchesByGroup("past")
+                    .map { output -> output.map { launch -> launch.toDomain() } }
+                    .asOperation()
+            }
+
+        override suspend fun getUpcomingLaunches(): ResponseOperation<List<Launch>> =
+            withContext(
+                Dispatchers.IO,
+            ) {
+                launchApi
+                    .getLaunchesByGroup("upcoming")
+                    .map { output -> output.map { launch -> launch.toDomain() } }
+                    .asOperation()
+            }
     }

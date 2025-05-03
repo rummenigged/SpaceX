@@ -4,6 +4,9 @@ kotlin = "2.1.20"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
+androidxTestRules = "1.6.1"
+turbine = "1.1.0"
+mockk = "1.13.12"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 composeBom = "2025.04.01"
@@ -62,8 +65,11 @@ firebase-crashlyticsKtx = { group = "com.google.firebase", name = "firebase-cras
 firebase-analyticsKtx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 
 # test dependencies
+test-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+test-androidx-rules = { module = "androidx.test:rules", version.ref = "androidxTestRules" }
 test-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 test-androidx-compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 test-androidx-compose-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }

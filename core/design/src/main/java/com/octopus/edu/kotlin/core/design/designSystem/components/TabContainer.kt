@@ -33,24 +33,24 @@ fun TabContainer(
     state: PagerState = rememberPagerState { tabTitles.size },
     tabContent: @Composable (
         title: String,
-        isSelected: Boolean
+        isSelected: Boolean,
     ) -> Unit = { title, _ -> Text(title) },
     tabRow: @Composable (
         selectedTabIndex: Int,
-        tabs: @Composable () -> Unit
+        tabs: @Composable () -> Unit,
     ) -> Unit = { index, tabs ->
         TabRow(
             selectedTabIndex = index,
             indicator = { tabPositions ->
                 TabRowDefaults.SecondaryIndicator(
-                    Modifier.tabIndicatorOffset(tabPositions[state.currentPage])
+                    Modifier.tabIndicatorOffset(tabPositions[state.currentPage]),
                 )
-            }
+            },
         ) {
             tabs()
         }
     },
-    pageContent: @Composable (pageIndex: Int) -> Unit
+    pageContent: @Composable (pageIndex: Int) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -64,7 +64,7 @@ fun TabContainer(
                             state.animateScrollToPage(index)
                         }
                     },
-                    text = { tabContent(title, state.currentPage == index) }
+                    text = { tabContent(title, state.currentPage == index) },
                 )
             }
         }
@@ -72,14 +72,14 @@ fun TabContainer(
         HorizontalPager(
             state = state,
             modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.Top,
         ) { page ->
             AnimatedContent(
                 targetState = page,
                 transitionSpec = {
                     slideInHorizontally { it } + fadeIn() togetherWith
                         slideOutHorizontally { -it } + fadeOut()
-                }
+                },
             ) {
                 pageContent(it)
             }
@@ -95,23 +95,23 @@ fun TabComponent(
     state: PagerState = rememberPagerState { tabTitles.size },
     tabContent: @Composable (
         title: String,
-        isSelected: Boolean
+        isSelected: Boolean,
     ) -> Unit = { title, _ -> Text(title) },
     tabRow: @Composable (
         selectedTabIndex: Int,
-        tabs: @Composable () -> Unit
+        tabs: @Composable () -> Unit,
     ) -> Unit = { index, tabs ->
         TabRow(
             selectedTabIndex = state.currentPage,
             indicator = { tabPositions ->
                 TabRowDefaults.SecondaryIndicator(
-                    Modifier.tabIndicatorOffset(tabPositions[state.currentPage])
+                    Modifier.tabIndicatorOffset(tabPositions[state.currentPage]),
                 )
-            }
+            },
         ) {
             tabs()
         }
-    }
+    },
 ) {
     Column(modifier.fillMaxWidth()) {
         val scope = rememberCoroutineScope()
@@ -125,7 +125,7 @@ fun TabComponent(
                         }
                         onTabSelected(index)
                     },
-                    text = { tabContent(title, state.currentPage == index) }
+                    text = { tabContent(title, state.currentPage == index) },
                 )
             }
         }
@@ -146,8 +146,8 @@ private fun TabContainerPreview() {
         tabContent = { title, selected ->
             Text(
                 text = title,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
             )
-        }
+        },
     )
 }

@@ -11,11 +11,11 @@ interface LaunchesApi {
 
     @GET("launches/{launch_group}")
     suspend fun getLaunchesByGroup(
-        @Path("launch_group") group: String
+        @Path("launch_group") group: String,
     ): NetworkResponse<List<LaunchDTO>>
 
     @GET("launches/{flight_number}")
     suspend fun getLaunchDetails(
-        @Path("flight_number") flightNumber: Int
+        @Path("flight_number") flightNumber: Int,
     ): NetworkResponse<LaunchDTO>
 }

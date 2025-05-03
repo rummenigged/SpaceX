@@ -19,6 +19,9 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, Effect : Vi
     val viewStateFlow
         get() = _viewStateFlow.asStateFlow()
 
+    val viewState
+        get() = _viewStateFlow.value
+
     private val _effect = MutableStateFlow<Effect?>(null)
     val effect = _effect.asStateFlow()
 
@@ -34,10 +37,10 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, Effect : Vi
         _effect.value = null
     }
 
-    fun <T> getSavedStateValue(key: String): T? = savedState[key]
+    protected fun <T> getSavedStateValue(key: String): T? = savedState[key]
 
     @Suppress("unused")
-    fun <T> saveStateValue(
+    protected fun <T> saveStateValue(
         key: String,
         value: T,
     ) = savedState.set(key, value)

@@ -12,76 +12,81 @@ import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.Tab
 import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.Tab.Past
 import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.Tab.Upcoming
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class LaunchesViewModel @Inject constructor(
-    private val launchRepository: LaunchRepository,
-    savedState: SavedStateHandle
-) : BaseViewModel<
-    LaunchesUiContract.UiEvent,
-    LaunchesUiContract.UiState,
-    LaunchesUiContract.UiEffect
-    >(savedState) {
-
-    init {
-        onTabSelected(getInitialValue().tabSelected)
-    }
-
-    private fun onTabSelected(tab: Tab) = viewModelScope.launch {
-        setState {
-            copy(
-                isLoading = true,
-                tabSelected = tab
-            )
+class LaunchesViewModel
+    @Inject
+    constructor(
+        private val launchRepository: LaunchRepository,
+        savedState: SavedStateHandle,
+    ) : BaseViewModel<
+            LaunchesUiContract.UiEvent,
+            LaunchesUiContract.UiState,
+            LaunchesUiContract.UiEffect,
+            >(savedState) {
+        init {
+            getLaunchesByGroup(getInitialValue().tabSelected)
         }
-        when (tab) {
-            is Past -> {
-                updateLaunchList(launchRepository.getPastLaunches())
-            }
-            is Upcoming -> {
-                updateLaunchList(launchRepository.getUpcomingLaunches())
-            }
-        }
-    }
 
-    private fun updateLaunchList(result: ResponseOperation<List<Launch>>) {
-        when (result) {
-            is Success -> {
-                setState {
-                    copy(
-                        launches = result.data,
-                        isLoading = false
-                    )
+        private fun getLaunchesByGroup(tab: Tab) =
+            viewModelScope.launch {
+                setState { copy(isLoading = true, tabSelected = tab) }
+
+                val result =
+                    when (tab) {
+                        is Past -> launchRepository.getPastLaunches()
+                        is Upcoming -> launchRepository.getUpcomingLaunches()
+                    }
+
+                updateLaunchList(result)
+            }
+
+        private fun updateLaunchList(result: ResponseOperation<List<Launch>>) {
+            when (result) {
+                is Success -> {
+                    setState {
+                        copy(
+                            launches = result.data,
+                            isLoading = false,
+                        )
+                    }
+                }
+
+                is Error -> {
+                    setState { copy(isLoading = false) }
+                    setEffect(LaunchesUiContract.UiEffect.ShowError(result.message.toString()))
                 }
             }
+        }
 
-            is Error -> {
-                setEffect(LaunchesUiContract.UiEffect.ShowError(result.message.toString()))
+        override fun getInitialValue(): LaunchesUiContract.UiState =
+            LaunchesUiContract.UiState(
+                isLoading = false,
+            )
+
+        override fun processEvent(event: LaunchesUiContract.UiEvent) {
+            when (event) {
+                is LaunchesUiContract.UiEvent.OnLaunchClicked -> {
+                    onLaunchClicked(event.flightNumber)
+                }
+
+                LaunchesUiContract.UiEvent.MarkEffectAsConsumed -> markEffectAsConsumed()
+
+                is LaunchesUiContract.UiEvent.OnTabSelected -> {
+                    getLaunchesByGroup(event.tab)
+                }
+
+                LaunchesUiContract.UiEvent.ReloadLaunches -> {
+                    getLaunchesByGroup(getInitialValue().tabSelected)
+                }
             }
         }
-    }
 
-    override fun getInitialValue(): LaunchesUiContract.UiState = LaunchesUiContract.UiState(
-        isLoading = false
-    )
-
-    override fun processEvent(event: LaunchesUiContract.UiEvent) {
-        when (event) {
-            is LaunchesUiContract.UiEvent.OnLaunchClicked -> {
-                onLaunchClicked(event.flightNumber)
-            }
-
-            LaunchesUiContract.UiEvent.MarkEffectAsConsumed -> markEffectAsConsumed()
-
-            is LaunchesUiContract.UiEvent.OnTabSelected -> {
-                onTabSelected(event.tab)
-            }
+        private fun onLaunchClicked(flightNumber: Int) {
+            setEffect(LaunchesUiContract.UiEffect.NavigateToLaunchDetails(flightNumber))
         }
-    }
 
-    private fun onLaunchClicked(flightNumber: Int) {
-        setEffect(LaunchesUiContract.UiEffect.NavigateToLaunchDetails(flightNumber))
+        companion object
     }
-}

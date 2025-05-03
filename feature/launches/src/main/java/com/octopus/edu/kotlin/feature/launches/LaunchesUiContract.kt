@@ -14,7 +14,7 @@ object LaunchesUiContract {
     data class UiState(
         val isLoading: Boolean = true,
         val launches: List<Launch> = listOf<Launch>(),
-        val tabSelected: Tab = Past()
+        val tabSelected: Tab = Past(),
     ) : ViewState {
         val tabs: List<Tab> = listOf<Tab>(Past(), Upcoming())
         val tabTitles: List<String>
@@ -41,10 +41,13 @@ object LaunchesUiContract {
         data class OnLaunchClicked(val flightNumber: Int) : UiEvent()
 
         data class OnTabSelected(val tab: Tab) : UiEvent()
+
+        data object ReloadLaunches : UiEvent()
     }
 
-    internal fun LaunchStatus.getStatusValue() = when (this) {
-        is Success -> "Success"
-        is Failure -> "Failure"
-    }
+    internal fun LaunchStatus.getStatusValue() =
+        when (this) {
+            is Success -> "Success"
+            is Failure -> "Failure"
+        }
 }

@@ -1,6 +1,5 @@
 package com.octopus.edu.kotlin.feature.launches
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,10 +19,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,28 +62,31 @@ import okhttp3.internal.toImmutableList
 internal fun LaunchesScreen(
     modifier: Modifier = Modifier,
     navigation: SpaceXNavigation = LocalNavigation.current,
-    viewModel: LaunchesViewModel = hiltViewModel()
+    viewModel: LaunchesViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.viewStateFlow.collectAsStateWithLifecycle()
+    val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         modifier = modifier,
         topBar = {
             SpaceXTopBar(
-                title = R.string.launch_list_title
+                title = R.string.launch_list_title,
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
     ) { padding ->
         LaunchesContent(
             modifier = modifier.padding(padding),
             uiState = viewState,
-            onEvent = viewModel::processEvent
+            onEvent = viewModel::processEvent,
         )
 
         EffectHandler(
             effectFlow = viewModel.effect,
+            snackBarHostState = snackBarHostState,
             navigation = navigation,
-            onEvent = viewModel::processEvent
+            onEvent = viewModel::processEvent,
         )
     }
 }
@@ -89,7 +95,8 @@ internal fun LaunchesScreen(
 fun EffectHandler(
     navigation: SpaceXNavigation,
     effectFlow: StateFlow<LaunchesUiContract.UiEffect?>,
-    onEvent: (UiEvent) -> Unit
+    onEvent: (UiEvent) -> Unit,
+    snackBarHostState: SnackbarHostState,
 ) {
     val currentOnEvent by rememberUpdatedState(onEvent)
     val context = LocalContext.current
@@ -99,17 +106,25 @@ fun EffectHandler(
         onEffect = { effect ->
             when (effect) {
                 is LaunchesUiContract.UiEffect.ShowError -> {
-                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                    val result =
+                        snackBarHostState.showSnackbar(
+                            message = effect.message,
+                            actionLabel = context.getString(R.string.retry),
+                        )
+
+                    if (result == SnackbarResult.ActionPerformed) {
+                        currentOnEvent(UiEvent.ReloadLaunches)
+                    }
                 }
 
                 is LaunchesUiContract.UiEffect.NavigateToLaunchDetails ->
                     navigation.navigate(
                         LaunchDetails(
-                            effect.flightNumber
-                        )
+                            effect.flightNumber,
+                        ),
                     )
             }
-        }
+        },
     )
 }
 
@@ -117,7 +132,7 @@ fun EffectHandler(
 internal fun LaunchesContent(
     uiState: UiState,
     onEvent: (UiEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         val selectedIndex = uiState.tabs.indexOfFirst { it == uiState.tabSelected }
@@ -125,7 +140,7 @@ internal fun LaunchesContent(
 
         TabContainer(
             tabTitles = uiState.tabTitles,
-            state = pagerState
+            state = pagerState,
         ) { tabIndex ->
 
             LaunchedEffect(tabIndex) {
@@ -137,7 +152,7 @@ internal fun LaunchesContent(
             } else {
                 LaunchList(
                     uiState,
-                    onEvent
+                    onEvent,
                 )
             }
         }
@@ -145,117 +160,130 @@ internal fun LaunchesContent(
 }
 
 @Composable
-fun LaunchList(uiState: UiState, onEvent: (UiEvent) -> Unit, modifier: Modifier = Modifier) {
+fun LaunchList(
+    uiState: UiState,
+    onEvent: (UiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colorScheme.background),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(colorScheme.background),
         contentPadding =
-        androidx.compose.foundation.layout
-            .PaddingValues(all = 16.dp),
+            androidx.compose.foundation.layout
+                .PaddingValues(all = 16.dp),
         verticalArrangement =
-        androidx.compose.foundation.layout.Arrangement
-            .spacedBy(8.dp)
+            androidx.compose.foundation.layout.Arrangement
+                .spacedBy(8.dp),
     ) {
         items(uiState.launches) { item ->
             LaunchItem(
                 item = item,
                 onItemClicked = { flightNumber ->
                     onEvent(UiEvent.OnLaunchClicked(flightNumber))
-                }
+                },
             )
         }
     }
 }
 
 @Composable
-internal fun LaunchItem(item: Launch, onItemClicked: (Int) -> Unit, modifier: Modifier = Modifier) {
+internal fun LaunchItem(
+    item: Launch,
+    onItemClicked: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
-        modifier = modifier.clickable {
-            onItemClicked(item.flightNumber)
-        }
+        modifier =
+            modifier.clickable {
+                onItemClicked(item.flightNumber)
+            },
     ) {
         LaunchPatch(patch = item.patch)
 
         Spacer(
             modifier =
-            Modifier.width(
-                8.dp
-            )
+                Modifier.width(
+                    8.dp,
+                ),
         )
 
         Column(
             modifier =
-            Modifier.weight(
-                1f
-            )
+                Modifier.weight(
+                    1f,
+                ),
         ) {
             Text(
                 text = "${item.missionName} - ${item.rocketName}",
                 style = Typography.bodyMedium,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             Spacer(
                 modifier =
-                Modifier.height(
-                    8.dp
-                )
+                    Modifier.height(
+                        8.dp,
+                    ),
             )
 
             Text(
                 text = item.date,
-                style = Typography.bodySmall
+                style = Typography.bodySmall,
             )
         }
 
         Spacer(
             modifier =
-            Modifier.width(
-                4.dp
-            )
+                Modifier.width(
+                    4.dp,
+                ),
         )
         Text(
             text = item.launchStatus.getStatusValue(),
-            style = Typography.labelSmall
+            style = Typography.labelSmall,
         )
     }
 }
 
 @Composable
-fun LaunchPatch(modifier: Modifier = Modifier, patch: String?) {
+fun LaunchPatch(
+    modifier: Modifier = Modifier,
+    patch: String?,
+) {
     if (patch.isNullOrEmpty()) {
         Box(
             modifier =
-            modifier
-                .size(width = 62.dp, height = 62.dp)
-                .clip(shapes.small)
-                .background(color = colorScheme.onBackground)
+                modifier
+                    .size(width = 62.dp, height = 62.dp)
+                    .clip(shapes.small)
+                    .background(color = colorScheme.onBackground),
         )
     } else {
         AsyncImage(
             model =
-            ImageRequest
-                .Builder(LocalContext.current)
-                .data(patch)
-                .decoderFactory(SvgDecoder.Factory())
-                .build(),
+                ImageRequest
+                    .Builder(LocalContext.current)
+                    .data(patch)
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
             contentScale = ContentScale.Companion.Fit,
             modifier =
-            modifier
-                .size(62.dp)
-                .border(
-                    width = 2.dp,
-                    color = colorScheme.onSurfaceVariant,
-                    shape =
-                    androidx.compose.foundation.shape
-                        .RoundedCornerShape(8.dp)
-                ).clip(
-                    androidx.compose.foundation.shape
-                        .RoundedCornerShape(8.dp)
-                ).background(colorScheme.onSurface),
-            contentDescription = null
+                modifier
+                    .size(62.dp)
+                    .border(
+                        width = 2.dp,
+                        color = colorScheme.onSurfaceVariant,
+                        shape =
+                            androidx.compose.foundation.shape
+                                .RoundedCornerShape(8.dp),
+                    ).clip(
+                        androidx.compose.foundation.shape
+                            .RoundedCornerShape(8.dp),
+                    ).background(colorScheme.onSurface),
+            contentDescription = null,
         )
     }
 }
@@ -265,8 +293,8 @@ fun LaunchPatch(modifier: Modifier = Modifier, patch: String?) {
 private fun LeagueItemPreview() {
     LaunchItem(
         item =
-        Launch.Companion.mock(),
-        onItemClicked = {}
+            Launch.Companion.mock(),
+        onItemClicked = {},
     )
 }
 
@@ -277,16 +305,16 @@ private fun LeaguesScreenPreview() {
         Scaffold { padding ->
             LaunchesContent(
                 uiState =
-                UiState(
-                    isLoading = false,
-                    launches =
-                    listOf(
-                        Launch.Companion.mock()
-                    ).toImmutableList()
-                ),
+                    UiState(
+                        isLoading = false,
+                        launches =
+                            listOf(
+                                Launch.Companion.mock(),
+                            ).toImmutableList(),
+                    ),
                 onEvent = {},
                 modifier =
-                Modifier.padding(padding)
+                    Modifier.padding(padding),
             )
         }
     }

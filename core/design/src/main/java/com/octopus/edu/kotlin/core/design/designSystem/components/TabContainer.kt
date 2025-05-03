@@ -43,9 +43,9 @@ fun TabContainer(
             selectedTabIndex = index,
             indicator = { tabPositions ->
                 TabRowDefaults.SecondaryIndicator(
-                    Modifier.tabIndicatorOffset(tabPositions[state.currentPage])
+                    Modifier.tabIndicatorOffset(tabPositions[state.currentPage]),
                 )
-            }
+            },
         ) {
             tabs()
         }
@@ -64,7 +64,7 @@ fun TabContainer(
                             state.animateScrollToPage(index)
                         }
                     },
-                    text = { tabContent(title, state.currentPage == index) }
+                    text = { tabContent(title, state.currentPage == index) },
                 )
             }
         }
@@ -72,14 +72,14 @@ fun TabContainer(
         HorizontalPager(
             state = state,
             modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.Top,
         ) { page ->
             AnimatedContent(
                 targetState = page,
                 transitionSpec = {
                     slideInHorizontally { it } + fadeIn() togetherWith
                         slideOutHorizontally { -it } + fadeOut()
-                }
+                },
             ) {
                 pageContent(it)
             }
@@ -105,9 +105,9 @@ fun TabComponent(
             selectedTabIndex = state.currentPage,
             indicator = { tabPositions ->
                 TabRowDefaults.SecondaryIndicator(
-                    Modifier.tabIndicatorOffset(tabPositions[state.currentPage])
+                    Modifier.tabIndicatorOffset(tabPositions[state.currentPage]),
                 )
-            }
+            },
         ) {
             tabs()
         }
@@ -125,7 +125,7 @@ fun TabComponent(
                         }
                         onTabSelected(index)
                     },
-                    text = { tabContent(title, state.currentPage == index) }
+                    text = { tabContent(title, state.currentPage == index) },
                 )
             }
         }
@@ -146,8 +146,8 @@ private fun TabContainerPreview() {
         tabContent = { title, selected ->
             Text(
                 text = title,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
             )
-        }
+        },
     )
 }

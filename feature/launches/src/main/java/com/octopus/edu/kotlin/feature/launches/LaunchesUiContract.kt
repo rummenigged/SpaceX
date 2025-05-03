@@ -23,24 +23,38 @@ object LaunchesUiContract {
         fun getTab(position: Int): Tab = tabs[position]
     }
 
-    sealed class Tab(open val title: String) {
-        data class Past(override val title: String = "Past") : Tab(title)
+    sealed class Tab(
+        open val title: String
+    ) {
+        data class Past(
+            override val title: String = "Past"
+        ) : Tab(title)
 
-        data class Upcoming(override val title: String = "Upcoming") : Tab(title)
+        data class Upcoming(
+            override val title: String = "Upcoming"
+        ) : Tab(title)
     }
 
     sealed class UiEffect : ViewEffect {
-        data class NavigateToLaunchDetails(val flightNumber: Int) : UiEffect()
+        data class NavigateToLaunchDetails(
+            val flightNumber: Int
+        ) : UiEffect()
 
-        data class ShowError(val message: String) : UiEffect()
+        data class ShowError(
+            val message: String
+        ) : UiEffect()
     }
 
     sealed class UiEvent : ViewEvent {
         data object MarkEffectAsConsumed : UiEvent()
 
-        data class OnLaunchClicked(val flightNumber: Int) : UiEvent()
+        data class OnLaunchClicked(
+            val flightNumber: Int
+        ) : UiEvent()
 
-        data class OnTabSelected(val tab: Tab) : UiEvent()
+        data class OnTabSelected(
+            val tab: Tab
+        ) : UiEvent()
 
         data object ReloadLaunches : UiEvent()
     }

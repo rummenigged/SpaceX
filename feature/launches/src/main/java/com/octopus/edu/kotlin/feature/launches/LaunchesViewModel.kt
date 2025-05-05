@@ -27,21 +27,23 @@ class LaunchesViewModel
             LaunchesUiContract.UiEffect,
             >(savedState) {
         init {
-            getLaunchesByGroup(getInitialValue().tabSelected)
+            getLaunchesByGroup(viewState.tabSelected)
         }
 
-        private fun getLaunchesByGroup(tab: Tab) =
-            viewModelScope.launch {
-                setState { copy(isLoading = true, tabSelected = tab) }
+        private fun getLaunchesByGroup(
+            tab: Tab,
+            query: String = ""
+        ) = viewModelScope.launch {
+            setState { copy(isLoading = true, tabSelected = tab) }
 
-                val result =
-                    when (tab) {
-                        is Past -> launchRepository.getPastLaunches()
-                        is Upcoming -> launchRepository.getUpcomingLaunches()
-                    }
+            val result =
+                when (tab) {
+                    is Past -> launchRepository.getPastLaunches(query)
+                    is Upcoming -> launchRepository.getUpcomingLaunches(query)
+                }
 
-                updateLaunchList(result)
-            }
+            updateLaunchList(result)
+        }
 
         private fun updateLaunchList(result: ResponseOperation<List<Launch>>) {
             when (result) {
@@ -79,7 +81,14 @@ class LaunchesViewModel
                 }
 
                 LaunchesUiContract.UiEvent.ReloadLaunches -> {
-                    getLaunchesByGroup(getInitialValue().tabSelected)
+                    getLaunchesByGroup(viewState.tabSelected)
+                }
+
+                is LaunchesUiContract.UiEvent.SearchLaunches -> {
+                    getLaunchesByGroup(
+                        viewState.tabSelected,
+                        event.query,
+                    )
                 }
             }
         }

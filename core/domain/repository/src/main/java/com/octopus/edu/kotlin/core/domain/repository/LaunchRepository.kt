@@ -9,7 +9,7 @@ interface LaunchRepository {
 
     suspend fun getLaunchDetails(flightNumber: Int): ResponseOperation<LaunchDetails>
 
-    suspend fun getPastLaunches(): ResponseOperation<List<Launch>>
+    suspend fun getPastLaunches(query: String = ""): ResponseOperation<List<Launch>>
 
-    suspend fun getUpcomingLaunches(): ResponseOperation<List<Launch>>
+    suspend fun getUpcomingLaunches(query: String = ""): ResponseOperation<List<Launch>>
 }

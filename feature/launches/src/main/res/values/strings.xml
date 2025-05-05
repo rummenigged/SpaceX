@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="launch_list_title">Latest Launches</string>
-    <string name="retry">RETRY</string>
+    <string name="search_for_launches">Search for a launch</string>
 </resources>

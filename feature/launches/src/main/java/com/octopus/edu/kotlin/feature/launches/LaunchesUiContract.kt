@@ -57,6 +57,10 @@ object LaunchesUiContract {
         ) : UiEvent()
 
         data object ReloadLaunches : UiEvent()
+
+        data class SearchLaunches(
+            val query: String
+        ) : UiEvent()
     }
 
     internal fun LaunchStatus.getStatusValue() =

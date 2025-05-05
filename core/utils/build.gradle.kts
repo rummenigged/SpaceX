@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.adgem.cosmicrewards.core.data.launches"
+    namespace = "com.octopus.edu.kotlin.core.utils"
     compileSdk = rootProject.ext["compileSdkVersion"].toString().toInt()
 
     defaultConfig {
@@ -36,21 +36,8 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":core:domain:models"))
-    implementation(project(":core:domain:repository"))
-    implementation(project(":core:network"))
-    implementation(project(":core:utils"))
-
-    implementation(libs.androidx.core.ktx)
-
-//    Network
-    implementation(libs.retrofit)
-    implementation(libs.moshi.kotlin)
-
-//    Hilt
+    //    Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-
-    testImplementation(project(":core:testing"))
+    implementation(libs.hilt.navigation.compose)
 }

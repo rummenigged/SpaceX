@@ -13,6 +13,8 @@ import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiEffect.Navig
 import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiEffect.ShowError
 import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiEvent.OnLaunchClicked
 import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiEvent.OnTabSelected
+import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiEvent.ReloadLaunches
+import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiEvent.SearchLaunches
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -78,26 +80,39 @@ class LaunchesViewModelTest {
     @Test
     fun `when the getPastLaunches is called and return error the ui state should be updated`() =
         runTest {
+            val expectedErrorMessage = "Error"
+            val expectedLoadingState = false
+
             coEvery { launchesRepository.getPastLaunches() } returns
-                ResponseOperation.Error("Error")
+                ResponseOperation.Error(expectedErrorMessage)
 
             launchesViewModel.processEvent(OnTabSelected(Past()))
+            val isLoading = launchesViewModel.viewState.isLoading
+
+            assertEquals(expectedLoadingState, isLoading)
 
             launchesViewModel.effect.test {
-                assertEquals(ShowError("Error"), awaitItem())
+                assertEquals(ShowError(expectedErrorMessage), awaitItem())
             }
         }
 
     @Test
     fun `when the getUpcomingLaunches is called and return error the ui state should be updated`() =
         runTest {
+            val expectedErrorMessage = "Error"
+            val expectedLoadingState = false
+
             coEvery { launchesRepository.getUpcomingLaunches() } returns
-                ResponseOperation.Error("Error")
+                ResponseOperation.Error(expectedErrorMessage)
 
             launchesViewModel.processEvent(OnTabSelected(Upcoming()))
 
+            val isLoading = launchesViewModel.viewState.isLoading
+
+            assertEquals(expectedLoadingState, isLoading)
+
             launchesViewModel.effect.test {
-                assertEquals(ShowError("Error"), awaitItem())
+                assertEquals(ShowError(expectedErrorMessage), awaitItem())
             }
         }
 
@@ -105,13 +120,17 @@ class LaunchesViewModelTest {
     fun `when the getPastLaunches is called and return success the ui state should be updated`() =
         runTest {
             val expectedList = Launch.mockList(3)
+            val expectedLoadingState = false
+
             coEvery { launchesRepository.getPastLaunches() } returns
                 ResponseOperation.Success(expectedList)
 
             launchesViewModel.processEvent(OnTabSelected(Past()))
 
             val launches = launchesViewModel.viewState.launches
+            val isLoading = launchesViewModel.viewState.isLoading
 
+            assertEquals(expectedLoadingState, isLoading)
             assertEquals(expectedList, launches)
         }
 
@@ -119,13 +138,17 @@ class LaunchesViewModelTest {
     fun `when the getUpcomingLaunches is called and return success the ui state should be updated`() =
         runTest {
             val expectedList = Launch.mockList(3)
+            val expectedLoadingState = false
+
             coEvery { launchesRepository.getUpcomingLaunches() } returns
                 ResponseOperation.Success(expectedList)
 
             launchesViewModel.processEvent(OnTabSelected(Upcoming()))
 
             val launches = launchesViewModel.viewState.launches
+            val isLoading = launchesViewModel.viewState.isLoading
 
+            assertEquals(expectedLoadingState, isLoading)
             assertEquals(expectedList, launches)
         }
 
@@ -138,6 +161,135 @@ class LaunchesViewModelTest {
 
             launchesViewModel.effect.test {
                 assertEquals(NavigateToLaunchDetails(flightNumber), awaitItem())
+            }
+        }
+
+    @Test
+    fun `when the ReloadLaunches is triggered and return success the ui state should be updated`() =
+        runTest {
+            val expectedList = Launch.mockList(3)
+            val expectedLoadingState = false
+
+            coEvery { launchesRepository.getUpcomingLaunches() } returns
+                ResponseOperation.Success(expectedList)
+
+            launchesViewModel.processEvent(ReloadLaunches)
+
+            val launches = launchesViewModel.viewState.launches
+            val isLoading = launchesViewModel.viewState.isLoading
+
+            assertEquals(expectedLoadingState, isLoading)
+            assertEquals(expectedList, launches)
+        }
+
+    @Test
+    fun `when the ReloadLaunches is triggered and return error the ui state should be updated`() =
+        runTest {
+            val expectedErrorMessage = "Error"
+            val expectedLoadingState = false
+
+            when (launchesViewModel.viewState.tabSelected) {
+                is Past -> {
+                    coEvery { launchesRepository.getPastLaunches() } returns
+                        ResponseOperation.Error(expectedErrorMessage)
+                }
+                is Upcoming -> {
+                    coEvery { launchesRepository.getUpcomingLaunches() } returns
+                        ResponseOperation.Error(expectedErrorMessage)
+                }
+            }
+
+            launchesViewModel.processEvent(ReloadLaunches)
+
+            val isLoading = launchesViewModel.viewState.isLoading
+
+            assertEquals(expectedLoadingState, isLoading)
+
+            launchesViewModel.effect.test {
+                assertEquals(ShowError(expectedErrorMessage), awaitItem())
+            }
+        }
+
+    @Test
+    fun `when the SearchLaunches is triggered getLaunchesByGroup should be called with a query`() =
+        runTest {
+            val expectedList = Launch.mockList(3)
+            val query = "query"
+
+            when (launchesViewModel.viewState.tabSelected) {
+                is Past -> {
+                    coEvery { launchesRepository.getPastLaunches(query) } returns
+                        ResponseOperation.Success(expectedList)
+                }
+                is Upcoming -> {
+                    coEvery { launchesRepository.getUpcomingLaunches(query) } returns
+                        ResponseOperation.Success(expectedList)
+                }
+            }
+
+            launchesViewModel.processEvent(SearchLaunches(query))
+
+            coVerify(exactly = 1) {
+                when (launchesViewModel.viewState.tabSelected) {
+                    is Past -> launchesRepository.getPastLaunches(query)
+                    is Upcoming -> launchesRepository.getUpcomingLaunches(query)
+                }
+            }
+        }
+
+    @Test
+    fun `when the SearchLaunches is triggered and the result is success the ui state should be updated`() =
+        runTest {
+            val expectedList = Launch.mockList(3)
+            val expectedLoadingState = false
+            val query = "query"
+
+            when (launchesViewModel.viewState.tabSelected) {
+                is Past -> {
+                    coEvery { launchesRepository.getPastLaunches(query) } returns
+                        ResponseOperation.Success(expectedList)
+                }
+                is Upcoming -> {
+                    coEvery { launchesRepository.getUpcomingLaunches(query) } returns
+                        ResponseOperation.Success(expectedList)
+                }
+            }
+
+            launchesViewModel.processEvent(SearchLaunches(query))
+
+            val launches = launchesViewModel.viewState.launches
+            val isLoading = launchesViewModel.viewState.isLoading
+
+            assertEquals(expectedLoadingState, isLoading)
+            assertEquals(expectedList, launches)
+        }
+
+    @Test
+    fun `when the SearchLaunches is triggered and the result is error the ui state should be updated`() =
+        runTest {
+            val expectedLoadingState = false
+            val expectedErrorMessage = "Error"
+            val query = "query"
+
+            when (launchesViewModel.viewState.tabSelected) {
+                is Past -> {
+                    coEvery { launchesRepository.getPastLaunches(query) } returns
+                        ResponseOperation.Error(expectedErrorMessage)
+                }
+                is Upcoming -> {
+                    coEvery { launchesRepository.getUpcomingLaunches(query) } returns
+                        ResponseOperation.Error(expectedErrorMessage)
+                }
+            }
+
+            launchesViewModel.processEvent(SearchLaunches(query))
+
+            val isLoading = launchesViewModel.viewState.isLoading
+
+            assertEquals(expectedLoadingState, isLoading)
+
+            launchesViewModel.effect.test {
+                assertEquals(ShowError(expectedErrorMessage), awaitItem())
             }
         }
 

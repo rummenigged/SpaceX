@@ -76,23 +76,33 @@ class LaunchRepositoryImpl
                 }
             }
 
-        override suspend fun getPastLaunches(): ResponseOperation<List<Launch>> =
-            withContext(
-                dispatcherProvider.io,
-            ) {
-                launchApi
-                    .getLaunchesByGroup("past")
-                    .map { output -> output.map { launch -> launch.toDomain() } }
-                    .asOperation()
-            }
+        override suspend fun getPastLaunches(query: String): ResponseOperation<List<Launch>> =
+            getLaunchesByGroup(
+                group = "Past",
+                query = query,
+            )
 
-        override suspend fun getUpcomingLaunches(): ResponseOperation<List<Launch>> =
-            withContext(
-                dispatcherProvider.io,
-            ) {
+        override suspend fun getUpcomingLaunches(query: String): ResponseOperation<List<Launch>> =
+            getLaunchesByGroup(
+                group = "Upcoming",
+                query = query,
+            )
+
+        private suspend fun getLaunchesByGroup(
+            group: String,
+            query: String
+        ): ResponseOperation<List<Launch>> =
+            withContext(dispatcherProvider.io) {
                 launchApi
-                    .getLaunchesByGroup("upcoming")
-                    .map { output -> output.map { launch -> launch.toDomain() } }
-                    .asOperation()
+                    .getLaunchesByGroup(group)
+                    .map { output ->
+                        val filtered =
+                            if (query.isNotBlank()) {
+                                output.filter { it.name.contains(query, ignoreCase = true) }
+                            } else {
+                                output
+                            }
+                        filtered.map { it.toDomain() }
+                    }.asOperation()
             }
     }

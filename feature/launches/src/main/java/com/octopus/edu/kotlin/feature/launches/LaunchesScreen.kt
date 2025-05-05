@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,7 @@ import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.octopus.edu.kotlin.core.design.designSystem.components.FullScreenCircularProgressIndicator
-import com.octopus.edu.kotlin.core.design.designSystem.components.SpaceXTopBar
+import com.octopus.edu.kotlin.core.design.designSystem.components.SpaceXSearchBar
 import com.octopus.edu.kotlin.core.design.designSystem.components.TabContainer
 import com.octopus.edu.kotlin.core.design.designSystem.theme.SpaceXTheme
 import com.octopus.edu.kotlin.core.design.designSystem.theme.Typography
@@ -55,7 +56,7 @@ import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiEvent
 import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.UiState
 import com.octopus.edu.kotlin.feature.launches.LaunchesUiContract.getStatusValue
 import kotlinx.coroutines.flow.StateFlow
-import okhttp3.internal.toImmutableList
+import com.adgem.cosmicrewards.core.design.R as designR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,8 +71,15 @@ internal fun LaunchesScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            SpaceXTopBar(
-                title = R.string.launch_list_title,
+            SpaceXSearchBar(
+                isExpanded = true,
+                placeHolder = stringResource(R.string.search_for_launches),
+                onSearch = { query ->
+                    viewModel.processEvent(UiEvent.SearchLaunches(query))
+                },
+                onSearchCleared = {
+                    viewModel.processEvent(UiEvent.ReloadLaunches)
+                },
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
@@ -109,7 +117,7 @@ fun EffectHandler(
                     val result =
                         snackBarHostState.showSnackbar(
                             message = effect.message,
-                            actionLabel = context.getString(R.string.retry),
+                            actionLabel = context.getString(designR.string.retry),
                         )
 
                     if (result == SnackbarResult.ActionPerformed) {
@@ -290,16 +298,6 @@ fun LaunchPatch(
 
 @PreviewLightDark
 @Composable
-private fun LeagueItemPreview() {
-    LaunchItem(
-        item =
-            Launch.Companion.mock(),
-        onItemClicked = {},
-    )
-}
-
-@PreviewLightDark
-@Composable
 private fun LeaguesScreenPreview() {
     SpaceXTheme {
         Scaffold { padding ->
@@ -310,7 +308,7 @@ private fun LeaguesScreenPreview() {
                         launches =
                             listOf(
                                 Launch.Companion.mock(),
-                            ).toImmutableList(),
+                            ),
                     ),
                 onEvent = {},
                 modifier =
@@ -318,4 +316,14 @@ private fun LeaguesScreenPreview() {
             )
         }
     }
+}
+
+@PreviewLightDark
+@Composable
+private fun LeagueItemPreview() {
+    LaunchItem(
+        item =
+            Launch.Companion.mock(),
+        onItemClicked = {},
+    )
 }

@@ -99,7 +99,7 @@ fun SpaceXSearchBar(
 
 @PreviewLightDark
 @Composable
-fun SpaceXSearchBarPreview() {
+private fun SpaceXSearchBarPreview() {
     SpaceXTheme {
         SpaceXSearchBar(
             isExpanded = true,

@@ -10,7 +10,7 @@ import com.octopus.edu.kotlin.core.domain.models.launch.LaunchStatus
 import com.octopus.edu.kotlin.core.domain.repository.LaunchRepository
 import com.octopus.edu.kotlin.core.network.utils.NetworkResponse
 import com.octopus.edu.kotlin.core.network.utils.asOperation
-import kotlinx.coroutines.Dispatchers
+import com.octopus.edu.kotlin.core.utils.DispatcherProvider
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -19,10 +19,11 @@ class LaunchRepositoryImpl
     constructor(
         private val launchApi: LaunchesApi,
         private val rocketApi: RocketApi,
+        private val dispatcherProvider: DispatcherProvider
     ) : LaunchRepository {
         override suspend fun getAllLaunches(): ResponseOperation<List<Launch>> =
             withContext(
-                Dispatchers.IO,
+                dispatcherProvider.io,
             ) {
                 launchApi
                     .getLaunches()
@@ -31,7 +32,7 @@ class LaunchRepositoryImpl
             }
 
         override suspend fun getLaunchDetails(flightNumber: Int): ResponseOperation<LaunchDetails> =
-            withContext(Dispatchers.IO) {
+            withContext(dispatcherProvider.io) {
                 when (val launchDetailsResult = launchApi.getLaunchDetails(flightNumber)) {
                     is NetworkResponse.Success -> {
                         val launch = launchDetailsResult.data
@@ -91,7 +92,7 @@ class LaunchRepositoryImpl
             group: String,
             query: String
         ): ResponseOperation<List<Launch>> =
-            withContext(Dispatchers.IO) {
+            withContext(dispatcherProvider.io) {
                 launchApi
                     .getLaunchesByGroup(group)
                     .map { output ->

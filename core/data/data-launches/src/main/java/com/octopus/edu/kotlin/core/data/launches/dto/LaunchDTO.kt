@@ -2,6 +2,7 @@ package com.octopus.edu.kotlin.core.data.launches.dto
 
 import com.octopus.edu.kotlin.core.data.launches.utils.DateTimeUtils
 import com.octopus.edu.kotlin.core.domain.models.launch.Launch
+import com.octopus.edu.kotlin.core.domain.models.launch.LaunchDetails
 import com.octopus.edu.kotlin.core.domain.models.launch.LaunchStatus
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -72,5 +73,22 @@ fun LaunchDTO.toDomain(): Launch =
                 LaunchStatus
                     .Failure(launchFailureDetails?.reason.orEmpty())
             },
+        patch = links.patch,
+    )
+
+fun LaunchDTO.toDomain(rocket: RocketDetailsDTO): LaunchDetails =
+    LaunchDetails(
+        missionName = name,
+        flightNumber = flightNumber,
+        date = date,
+        siteName = site?.longName.orEmpty(),
+        rocket = rocket.toDomain(),
+        if (isLaunchSuccess == true) {
+            LaunchStatus.Success
+        } else {
+            LaunchStatus.Failure(
+                launchFailureDetails?.reason.orEmpty(),
+            )
+        },
         patch = links.patch,
     )

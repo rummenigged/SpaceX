@@ -39,6 +39,7 @@ dependencies {
 
     implementation(project(":core:domain:models"))
     implementation(project(":core:domain:repository"))
+    implementation(project(":core:data:data-common"))
     implementation(project(":core:network"))
     implementation(project(":core:utils"))
 

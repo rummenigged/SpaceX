@@ -27,6 +27,11 @@ sealed class NetworkResponse<out T : Any> {
             is NetworkError -> NetworkError(error)
             is ApiError -> ApiError(body, code, throwable)
         }
+
+    suspend fun doOnSuccess(block: suspend (T) -> Unit): NetworkResponse<T> {
+        if (this is Success) block(data)
+        return this
+    }
 }
 
 fun <T : Any> NetworkResponse<T>.asOperation(): ResponseOperation<T> =

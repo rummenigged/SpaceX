@@ -15,12 +15,12 @@ data class LaunchDetails(
     companion object
 }
 
-fun LaunchDetails.Companion.mock(): LaunchDetails =
+fun LaunchDetails.Companion.mock(id: Int = 0): LaunchDetails =
     LaunchDetails(
-        missionName = "Mock Name",
-        flightNumber = 0,
-        date = "Mock Date",
-        siteName = "Site Name",
+        missionName = "Mock Name $id",
+        flightNumber = id,
+        date = "$id/$id/20$id",
+        siteName = "Site Name $id",
         rocket = Rocket.Companion.mock(),
         launchStatus = LaunchStatus.Success,
         patch = null,

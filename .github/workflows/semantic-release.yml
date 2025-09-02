@@ -37,7 +37,7 @@ jobs:
 
       # Step 4 Execute Semantic Release
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@v5
         with:
           semantic_version: 17
           extra_plugins: |
